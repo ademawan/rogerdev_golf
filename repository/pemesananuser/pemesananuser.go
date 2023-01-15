@@ -19,6 +19,7 @@ func NewPemesananUserRepository(db *sql.DB) *PemesananUserRepository {
 }
 func (r *PemesananUserRepository) Create(pemesanan *domain.PemesananUser) error {
 	pemesanan.SecondPlayer = "0"
+	pemesanan.PemesananStatus = "menunggu konfirmasi"
 	query := `INSERT INTO pemesanan (
 		pemesanan_id,
 		pemesanan_nama,
@@ -258,8 +259,13 @@ func (r *PemesananUserRepository) GetAllDatatables() ([]domain.PemesananUserResp
 		if pemesanan.StatusPembayaran == "1" {
 			pemesanan.StatusPembayaran = "Sudah Dibayar"
 		} else {
-			pemesanan.StatusPembayaran = "Belum Dibayar"
-			pemesanan.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + pemesanan.PemesananId + `" data-original-title="Bayar" class="bayar btn btn-primary btn-sm editPemesanan">Bayar</a>`
+			if pemesanan.PemesananStatus == "menunggu konfirmasi" {
+				pemesanan.StatusPembayaran = "menunggu konfirmasi"
+			} else {
+				pemesanan.StatusPembayaran = "Belum Dibayar"
+				pemesanan.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + pemesanan.PemesananId + `" data-original-title="Bayar" class="bayar btn btn-primary btn-sm editPemesanan">Bayar</a>`
+			}
+
 		}
 
 		// pemesanan.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + pemesanan.PemesananId + `" data-original-title="Edit" class="edit btn btn-primary btn-sm editPemesanan">Edit</a>`
