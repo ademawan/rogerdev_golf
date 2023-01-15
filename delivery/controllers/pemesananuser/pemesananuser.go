@@ -181,11 +181,10 @@ func (uc *PemesananUserController) GetAllDatatables() echo.HandlerFunc {
 		if role == "1" {
 			mapping := make(map[string]interface{})
 			mapping["message"] = "unauthorize"
-			mapping["login"] = "1"
+			mapping["error"] = "error"
 
-			return c.JSON(http.StatusUnauthorized, mapping)
+			return c.JSON(http.StatusForbidden, mapping)
 		}
-
 		output := make(map[string]interface{})
 		output["draw"] = 1
 		output["recordsTotal"] = 0

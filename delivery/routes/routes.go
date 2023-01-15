@@ -47,7 +47,7 @@ func RegisterPath(e *echo.Echo,
 	e.GET("/login", aa.LoginPage())
 	e.GET("/register", aa.RegisterPage())
 
-	e.GET("/admin/dashboard", aa.Dashboard())
+	// e.GET("/admin/dashboard", aa.Dashboard())
 
 	//ROUTE REGISTER - LOGIN USERS
 	e.POST("/users/register", uc.Register())

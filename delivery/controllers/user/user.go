@@ -216,7 +216,11 @@ func (uc *UserController) GetAllDatatables() echo.HandlerFunc {
 		if role != "1" {
 			mapping := make(map[string]interface{})
 			mapping["message"] = "unauthorize"
-
+			mapping["error"] = "error"
+			if role == "2" || role == "3" {
+				return c.JSON(http.StatusForbidden, mapping)
+			}
+			mapping["login"] = "0"
 			return c.JSON(http.StatusUnauthorized, mapping)
 		}
 

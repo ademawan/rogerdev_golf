@@ -309,17 +309,15 @@ $(document).ready( function () {
        scrollY: true,
      
        ajax: {
-            url: "/admin/pemesanan/datatables",
+            url: "/user/pemesanan/datatables",
             type: "GET",
             headers: { 'Authorization': 'Bearer '+token},
              error:function (data) {     
-              if (data.status==401){
-                if(data.login=="1"){
+              if (data.status==403){
                   window.location = '/admin/user';
-                }
-                else{
-                  window.location = '/login';
-                }
+              }
+              if (data.status==401){
+                window.location = '/login';
               }
              }
        },
@@ -373,7 +371,7 @@ $(document).ready( function () {
    
        $.ajax({
          data: $('#formtambahpemesanan').serialize(),
-         url: "/admin/pemesanan/ajax",
+         url: "/user/pemesanan/ajax",
          type: "POST",
          dataType: 'json',
          beforeSend:function(){
@@ -416,7 +414,7 @@ $(document).ready( function () {
  
  
        var pemesanan_id = $(this).data('id');
-       $.get("/admin/pemesanan/ajax" +'/' + pemesanan_id +'/edit', function (data) {
+       $.get("/user/pemesanan/ajax" +'/' + pemesanan_id +'/edit', function (data) {
          $('#tambahuser').addClass('show');
          var dataNew = data.data
  
@@ -445,7 +443,7 @@ $(document).ready( function () {
        var pemesanan_id = $('#pemesanan_id').val();
        $.ajax({
          data: $('#formtambahpemesanan').serialize(),
-         url: "/admin/pemesanan/ajax"+'/'+pemesanan_id,
+         url: "/user/pemesanan/ajax"+'/'+pemesanan_id,
          type: "PUT",
          dataType: 'json',
          beforeSend:function(){
@@ -500,7 +498,7 @@ $(document).ready( function () {
         if (r == true) {
           $.ajax({
            type: "DELETE",
-           url: "/admin/pemesanan/ajax"+'/'+pemesanan_id,
+           url: "/user/pemesanan/ajax"+'/'+pemesanan_id,
            success: function (data) {
              $('.table-responsive').before(`<div class="alert alert-danger alert-dismissible fade show" role="alert"> Sukses hapus data!!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`);
              table.draw();

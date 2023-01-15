@@ -302,15 +302,13 @@ $(document).ready( function () {
             type: "GET",
             headers: { 'Authorization': 'Bearer '+token},
              error:function (data) {     
-              if (data.status==401){
-                if(data.login=="1"){
-                  window.location = '/user/pemesanan';
-                }
-                else{
-                  window.location = '/login';
-                }             
-               }
-             }
+                  if (data.status==401){
+                        window.location = '/login';                        
+                  }
+                  if (data.status==403){
+                        window.location = '/user/pemesanan';
+                 }     
+             }    
        },
        columns: [
                { data: 'user_nama', name: 'user_nama', class:'text-center' },
