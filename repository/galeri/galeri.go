@@ -95,6 +95,9 @@ func (r *GaleriRepository) GetAllDatatables() ([]domain.GaleriResponseFormatData
 
 	res, err := r.GetCount()
 	if err != nil {
+		if err.Error() == "galeri is not found" {
+			return galerii, 0, nil
+		}
 		return galerii, 0, errors.New("Internal Server Eroor")
 	}
 	if res == 0 {
@@ -228,7 +231,7 @@ func (r *GaleriRepository) GetCount() (int, error) {
 		return 0, errors.New("internal server error")
 	}
 	if count == 0 {
-		return 0, errors.New("user is not found")
+		return 0, errors.New("galeri is not found")
 
 	}
 	return count, nil

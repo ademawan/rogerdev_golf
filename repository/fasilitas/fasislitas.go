@@ -97,6 +97,9 @@ func (r *FasilitasRepository) GetAllDatatables() ([]domain.FasilitasResponseForm
 
 	res, err := r.GetCount()
 	if err != nil {
+		if err.Error() == "fasilitas is not found" {
+			return fasilitass, 0, nil
+		}
 		return fasilitass, 0, errors.New("Internal Server Eroor")
 	}
 	if res == 0 {

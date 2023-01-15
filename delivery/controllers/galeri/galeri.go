@@ -1,7 +1,6 @@
 package galeri
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"rogerdev_golf/delivery/controllers/common"
@@ -199,15 +198,23 @@ func (uc *GaleriController) GetAllDatatables() echo.HandlerFunc {
 			return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, output))
 
 		}
-		fmt.Println(res)
 		if len(res) != 0 {
 			output["start"] = 1
 			output["draw"] = 20
 			output["data"] = res
 			output["recordsTotal"] = count
-			output["recordsFiltered"] = 20
+			output["recordsFiltered"] = count
 		}
+		if len(res) == 0 {
+			output["draw"] = 1
+			galerii := []entities.GaleriResponseFormatDatatables{}
+			pemesanan := entities.GaleriResponseFormatDatatables{}
+			galerii = append(galerii, pemesanan)
+			output["data"] = galerii
+			output["status"] = 200
 
+			return c.JSON(http.StatusOK, output)
+		}
 		return c.JSON(http.StatusOK, output)
 	}
 }

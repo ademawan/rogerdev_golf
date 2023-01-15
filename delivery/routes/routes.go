@@ -44,14 +44,18 @@ func RegisterPath(e *echo.Echo,
 	e.GET("/kontak", aa.Contact())
 	e.GET("/daftar", aa.Daftar())
 
-	e.GET("/login", aa.LoginPage())
-	e.GET("/register", aa.RegisterPage())
+	e.GET("/admin/login", aa.AdminLoginPage())
+	e.GET("/admin/register", aa.AdminRegisterPage())
+	e.GET("/user/login", aa.LoginPage())
+	e.GET("/user/register", aa.RegisterPage())
 
 	// e.GET("/admin/dashboard", aa.Dashboard())
 
 	//ROUTE REGISTER - LOGIN USERS
-	e.POST("/users/register", uc.Register())
-	e.POST("/users/login", aa.Login())
+	e.POST("/admin/register", uc.Register())
+	e.POST("/admin/login", aa.Login())
+	e.POST("/user/register", uc.Register())
+	e.POST("/user/login", aa.Login())
 	// e.GET("google/login", aa.LoginGoogle())
 	// e.GET("google/callback", aa.LoginGoogleCallback())
 	e.POST("users/logout", aa.Logout(), middlewares.JwtMiddleware())
@@ -72,7 +76,7 @@ func RegisterPath(e *echo.Echo,
 	//ROUTE PEMESANAN
 	e.GET("/admin/pemesanan", pc.UI())
 	e.GET("/admin/pemesanan/datatables", pc.GetAllDatatables(), middlewares.JwtMiddleware())
-	e.POST("/admin/pemesanan/ajax", pc.Create())
+	e.POST("/admin/pemesanan/ajax", pc.Create(), middlewares.JwtMiddleware())
 	e.GET("/admin/pemesanan/ajax", pc.GetAll())
 	e.GET("/admin/pemesanan/ajax/:pemesananid/edit", pc.Get())
 	e.PUT("/admin/pemesanan/ajax/:pemesananid", pc.Update())
@@ -81,10 +85,11 @@ func RegisterPath(e *echo.Echo,
 	//ROUTE PEMESANAN USER
 	e.GET("/user/pemesanan", puc.UI())
 	e.GET("/user/pemesanan/datatables", puc.GetAllDatatables(), middlewares.JwtMiddleware())
-	e.POST("/user/pemesanan/ajax", puc.Create())
-	e.GET("/user/pemesanan/ajax", puc.GetAll())
+	e.POST("/user/pemesanan/ajax", puc.Create(), middlewares.JwtMiddleware())
+	// e.GET("/user/pemesanan/ajax", puc.GetAll())
 	e.GET("/user/pemesanan/ajax/:pemesananid/edit", puc.Get())
-	e.PUT("/user/pemesanan/ajax/:pemesananid", puc.Update())
+	// e.PUT("/user/pemesanan/ajax/:pemesananid", puc.Update())
+	e.GET("/user/pemesanan/ajax/:pemesananid/update", puc.UpdatePembayaran())
 	e.DELETE("/user/pemesanan/ajax/:pemesananid", puc.Delete())
 
 	//ROUTE FASILITAS

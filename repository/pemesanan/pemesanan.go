@@ -18,7 +18,7 @@ func NewPemesananRepository(db *sql.DB) *PemesananRepository {
 	return &PemesananRepository{db: db}
 }
 func (r *PemesananRepository) Create(pemesanan *domain.Pemesanan) error {
-
+	pemesanan.SecondPlayer = "0"
 	query := `INSERT INTO pemesanan (
 		pemesanan_id,
 		pemesanan_nama,
@@ -28,8 +28,17 @@ func (r *PemesananRepository) Create(pemesanan *domain.Pemesanan) error {
 		pemesanan_no_hp,
 		pemesanan_status,
 		pemesanan_alamat,
-		created_at
-		) VALUES (?,?,?,?,?,?,?,?,?)`
+		first_player,
+		second_player,
+		third_player,
+		fourth_player,
+		user_tipe_id1,
+		user_tipe_id2,
+		user_tipe_id3,
+		user_tipe_id4,
+		user_id,
+		status_pembayaran
+		) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
 
 	stmt, err := r.db.Prepare(query)
 	if err != nil {
@@ -39,7 +48,7 @@ func (r *PemesananRepository) Create(pemesanan *domain.Pemesanan) error {
 
 	}
 	defer stmt.Close()
-	_, err = stmt.Exec(pemesanan.PemesananId, pemesanan.PemesananNama, pemesanan.PemesananDate, pemesanan.PemesananTime, pemesanan.PemesananEmail, pemesanan.PemesananNoHp, pemesanan.PemesananStatus, pemesanan.PemesananAlamat, pemesanan.CreatedAt)
+	_, err = stmt.Exec(pemesanan.PemesananId, pemesanan.PemesananNama, pemesanan.PemesananDate, pemesanan.PemesananTime, pemesanan.PemesananEmail, pemesanan.PemesananNoHp, pemesanan.PemesananStatus, pemesanan.PemesananAlamat, pemesanan.FirstPlayer, pemesanan.SecondPlayer, pemesanan.ThirdPlayer, pemesanan.FourthPlayer, pemesanan.UserTipeId1, pemesanan.UserTipeId2, pemesanan.UserTipeId3, pemesanan.UserTipeId4, pemesanan.UserId, pemesanan.StatusPembayaran)
 	if err != nil {
 		return err
 	}
@@ -55,7 +64,7 @@ func (r *PemesananRepository) Get(pemesananId string) (domain.PemesananResponseF
 	query := `SELECT * FROM pemesanan where pemesanan_id=?  `
 
 	// execute
-	err = r.db.QueryRow(query, pemesananId).Scan(&pemesanan.PemesananId, &pemesanan.PemesananNama, &pemesanan.PemesananDate, &pemesanan.PemesananTime, &pemesanan.PemesananEmail, &pemesanan.PemesananEmail, &pemesanan.PemesananNoHp, &pemesanan.PemesananStatus, &pemesanan.PemesananAlamat, &pemesanan.CreatedAt)
+	err = r.db.QueryRow(query, pemesananId).Scan(&pemesanan.PemesananId, &pemesanan.PemesananNama, &pemesanan.PemesananDate, &pemesanan.PemesananTime, &pemesanan.PemesananEmail, &pemesanan.PemesananNoHp, &pemesanan.PemesananStatus, &pemesanan.PemesananAlamat, &pemesanan.CreatedAt, &pemesanan.FirstPlayer, &pemesanan.SecondPlayer, &pemesanan.ThirdPlayer, &pemesanan.FourthPlayer, &pemesanan.UserTipeId1, &pemesanan.UserTipeId2, &pemesanan.UserTipeId3, &pemesanan.UserTipeId4, &pemesanan.UserId, &pemesanan.StatusPembayaran)
 	if err != nil {
 		if err.Error() == "sql: no rows in result set" {
 			return pemesanan, errors.New("pemesanan is not found")
@@ -80,7 +89,7 @@ func (r *PemesananRepository) GetAll() ([]domain.PemesananResponseFormat, error)
 	defer rows1.Close()
 	for rows1.Next() {
 		pemesanan := domain.PemesananResponseFormat{}
-		err := rows1.Scan(&pemesanan.PemesananId, &pemesanan.PemesananNama, &pemesanan.PemesananDate, &pemesanan.PemesananTime, &pemesanan.PemesananEmail, &pemesanan.PemesananEmail, &pemesanan.PemesananNoHp, &pemesanan.PemesananStatus, &pemesanan.PemesananAlamat, &pemesanan.CreatedAt)
+		err := rows1.Scan(&pemesanan.PemesananId, &pemesanan.PemesananNama, &pemesanan.PemesananDate, &pemesanan.PemesananTime, &pemesanan.PemesananEmail, &pemesanan.PemesananNoHp, &pemesanan.PemesananStatus, &pemesanan.PemesananAlamat, &pemesanan.CreatedAt, &pemesanan.FirstPlayer, &pemesanan.SecondPlayer, &pemesanan.ThirdPlayer, &pemesanan.FourthPlayer, &pemesanan.UserTipeId1, &pemesanan.UserTipeId2, &pemesanan.UserTipeId3, &pemesanan.UserTipeId4, &pemesanan.UserId, &pemesanan.StatusPembayaran)
 
 		if err != nil {
 			return pemesanann, errors.New("failed get")
@@ -127,51 +136,88 @@ func (r *PemesananRepository) Delete(pemesananId string) (int64, error) {
 
 }
 
-func (r *PemesananRepository) QueryBuilder(scope string, fasilitas *domain.Pemesanan) (string, []interface{}) {
+func (r *PemesananRepository) QueryBuilder(scope string, pemesanan *domain.Pemesanan) (string, []interface{}) {
 	queries := []string{}
 	params := make([]interface{}, 0)
 	query := ""
 	if scope == "update" {
-		query += "UPDATE fasilitas SET "
+		query += "UPDATE pemesanan SET "
 	}
 
-	if fasilitas.PemesananNama != "" {
+	if pemesanan.PemesananNama != "" {
 		queries = append(queries, " pemesanan_nama=? ")
-		params = append(params, fasilitas.PemesananNama)
+		params = append(params, pemesanan.PemesananNama)
 
 	}
-	if fasilitas.PemesananDate != "" {
+	if pemesanan.PemesananDate != "" {
 		queries = append(queries, " pemesanan_date=? ")
-		params = append(params, fasilitas.PemesananDate)
+		params = append(params, pemesanan.PemesananDate)
 
 	}
-	if fasilitas.PemesananTime != "" {
+	if pemesanan.PemesananTime != "" {
 		queries = append(queries, " pemesanan_time=? ")
-		params = append(params, fasilitas.PemesananTime)
+		params = append(params, pemesanan.PemesananTime)
 	}
 
-	if fasilitas.PemesananEmail != "" {
+	if pemesanan.PemesananEmail != "" {
 		queries = append(queries, " pemesanan_email=? ")
-		params = append(params, fasilitas.PemesananEmail)
+		params = append(params, pemesanan.PemesananEmail)
 	}
 
-	if fasilitas.PemesananNoHp != "" {
+	if pemesanan.PemesananNoHp != "" {
 		queries = append(queries, " pemesanan_no_hp=? ")
-		params = append(params, fasilitas.PemesananNoHp)
+		params = append(params, pemesanan.PemesananNoHp)
 	}
 
-	if fasilitas.PemesananStatus != "" {
+	if pemesanan.PemesananStatus != "" {
 		queries = append(queries, " pemesanan_status=? ")
-		params = append(params, fasilitas.PemesananStatus)
+		params = append(params, pemesanan.PemesananStatus)
 	}
-	if fasilitas.PemesananAlamat != "" {
+	if pemesanan.PemesananAlamat != "" {
 		queries = append(queries, " pemesanan_alamat=? ")
-		params = append(params, fasilitas.PemesananAlamat)
+		params = append(params, pemesanan.PemesananAlamat)
+	}
+
+	if pemesanan.FirstPlayer != "" {
+		queries = append(queries, " first_player=? ")
+		params = append(params, pemesanan.FirstPlayer)
+	}
+	if pemesanan.SecondPlayer != "" {
+		queries = append(queries, " second_player=? ")
+		params = append(params, pemesanan.SecondPlayer)
+	}
+	if pemesanan.ThirdPlayer != "" {
+		queries = append(queries, " third_player=? ")
+		params = append(params, pemesanan.ThirdPlayer)
+	}
+	if pemesanan.FourthPlayer != "" {
+		queries = append(queries, " fourth_player=? ")
+		params = append(params, pemesanan.FourthPlayer)
+	}
+	if pemesanan.UserTipeId1 != "" {
+		queries = append(queries, " user_tipe_id1=? ")
+		params = append(params, pemesanan.UserTipeId1)
+	}
+	if pemesanan.UserTipeId2 != "" {
+		queries = append(queries, " user_tipe_id2=? ")
+		params = append(params, pemesanan.UserTipeId2)
+	}
+	if pemesanan.UserTipeId3 != "" {
+		queries = append(queries, " user_tipe_id3=? ")
+		params = append(params, pemesanan.UserTipeId3)
+	}
+	if pemesanan.UserTipeId4 != "" {
+		queries = append(queries, " user_tipe_id4=? ")
+		params = append(params, pemesanan.UserTipeId4)
+	}
+	if pemesanan.StatusPembayaran != "" {
+		queries = append(queries, " status_pembayaran=? ")
+		params = append(params, pemesanan.StatusPembayaran)
 	}
 
 	query += strings.Join(queries, ",")
 	query += " WHERE pemesanan_id =?  "
-	params = append(params, fasilitas.PemesananId)
+	params = append(params, pemesanan.PemesananId)
 
 	return query, params
 }
@@ -195,6 +241,9 @@ func (r *PemesananRepository) GetAllDatatables() ([]domain.PemesananResponseForm
 
 	res, err := r.GetCount()
 	if err != nil {
+		if err.Error() == "pemesanan is empty" {
+			return pemesanann, 0, nil
+		}
 		return pemesanann, 0, errors.New("Internal Server Eroor")
 	}
 	if res == 0 {
@@ -208,7 +257,16 @@ func (r *PemesananRepository) GetAllDatatables() ([]domain.PemesananResponseForm
 	pemesanan_no_hp,
 	pemesanan_status,
 	pemesanan_alamat, 
-	created_at
+	created_at,
+		first_player,
+		second_player,
+		third_player,
+		fourth_player,
+		user_tipe_id1,
+		user_tipe_id2,
+		user_tipe_id3,
+		user_tipe_id4,
+		user_id
 	 from
 	 pemesanan `
 	rows1, err := r.db.Query(query)
@@ -220,7 +278,7 @@ func (r *PemesananRepository) GetAllDatatables() ([]domain.PemesananResponseForm
 	defer rows1.Close()
 	for rows1.Next() {
 		pemesanan := domain.PemesananResponseFormatDatatables{}
-		err := rows1.Scan(&pemesanan.PemesananId, &pemesanan.PemesananNama, &pemesanan.PemesananDate, &pemesanan.PemesananTime, &pemesanan.PemesananEmail, &pemesanan.PemesananNoHp, &pemesanan.PemesananStatus, &pemesanan.PemesananAlamat, &pemesanan.CreatedAt)
+		err := rows1.Scan(&pemesanan.PemesananId, &pemesanan.PemesananNama, &pemesanan.PemesananDate, &pemesanan.PemesananTime, &pemesanan.PemesananEmail, &pemesanan.PemesananNoHp, &pemesanan.PemesananStatus, &pemesanan.PemesananAlamat, &pemesanan.CreatedAt, &pemesanan.FirstPlayer, &pemesanan.SecondPlayer, &pemesanan.ThirdPlayer, &pemesanan.FourthPlayer, &pemesanan.UserTipeId1, &pemesanan.UserTipeId2, &pemesanan.UserTipeId3, &pemesanan.UserTipeId4, &pemesanan.UserId, &pemesanan.StatusPembayaran)
 
 		if err != nil {
 
@@ -230,7 +288,14 @@ func (r *PemesananRepository) GetAllDatatables() ([]domain.PemesananResponseForm
 		pemesanan.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + pemesanan.PemesananId + `" data-original-title="Edit" class="edit btn btn-primary btn-sm editPemesanan">Edit</a>`
 
 		pemesanan.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + pemesanan.PemesananId + `" data-original-title="Delete" class="btn btn-danger btn-sm deletePemesanan">Delete</a>`
+
+		if pemesanan.StatusPembayaran == "1" {
+			pemesanan.StatusPembayaran = "Sudah Dibayar"
+		} else {
+			pemesanan.StatusPembayaran = "Belum Dibayar"
+		}
 		pemesanann = append(pemesanann, pemesanan)
+
 	}
 
 	return pemesanann, res, nil

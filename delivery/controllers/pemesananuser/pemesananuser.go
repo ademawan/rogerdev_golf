@@ -1,6 +1,7 @@
 package pemesananuser
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"rogerdev_golf/delivery/controllers/common"
@@ -44,7 +45,17 @@ func (uc *PemesananUserController) Create() echo.HandlerFunc {
 
 		c.Bind(&req)
 		err := c.Validate(&req)
+		role := middlewares.ExtractRoles(c)
+		fmt.Println(role, "HAAAAALLLLLLOOOOOO")
+		if role == "1" {
+			mapping := make(map[string]interface{})
+			mapping["message"] = "unauthorize"
+			mapping["error"] = "error"
 
+			mapping["login"] = "0"
+			return c.JSON(http.StatusForbidden, mapping)
+		}
+		userIdToken := middlewares.ExtractTokenUserUid(c)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.ResponseUser(http.StatusBadRequest, "There is some problem from input", nil))
 		}
@@ -77,6 +88,15 @@ func (uc *PemesananUserController) Create() echo.HandlerFunc {
 			PemesananNoHp:   req.PemesananNoHp,
 			PemesananStatus: req.PemesananStatus,
 			PemesananAlamat: req.PemesananAlamat,
+			FirstPlayer:     req.FirstPlayer,
+			SecondPlayer:    req.SecondPlayer,
+			ThirdPlayer:     req.ThirdPlayer,
+			FourthPlayer:    req.FourthPlayer,
+			UserTipeId1:     req.UserTipeId1,
+			UserTipeId2:     req.UserTipeId2,
+			UserTipeId3:     req.UserTipeId3,
+			UserTipeId4:     req.UserTipeId4,
+			UserId:          userIdToken,
 		})
 		if err_repo != nil {
 			return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err_repo.Error(), nil))
@@ -90,7 +110,7 @@ func (uc *PemesananUserController) Create() echo.HandlerFunc {
 func (uc *PemesananUserController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		pemesanaId := c.Param("pemesananid")
-
+		fmt.Println(pemesanaId, "HHHAAAA")
 		res, err := uc.repo.Get(pemesanaId)
 
 		if err != nil {
@@ -108,6 +128,29 @@ func (uc *PemesananUserController) Get() echo.HandlerFunc {
 		// res.DeletedAt = uc.TimeToUser(res.DeletedAt.(int64))
 
 		return c.JSON(http.StatusOK, common.ResponseUser(http.StatusOK, "Success get pemesanan", res))
+	}
+}
+
+func (uc *PemesananUserController) UpdatePembayaran() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		pemesanaId := c.Param("pemesananid")
+		err := uc.repo.Update(&entities.PemesananUser{PemesananId: pemesanaId, StatusPembayaran: "1"})
+
+		if err != nil {
+			statusCode := http.StatusInternalServerError
+			errorMessage := "There is some problem from the server"
+			if err.Error() == "record not found" {
+				statusCode = http.StatusNotFound
+				errorMessage = err.Error()
+			}
+			return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, nil))
+		}
+
+		// res.CreatedAt = uc.TimeToUser(res.CreatedAt.(int64))
+		// res.UpdatedAt = uc.TimeToUser(res.UpdatedAt.(int64))
+		// res.DeletedAt = uc.TimeToUser(res.DeletedAt.(int64))
+
+		return c.JSON(http.StatusCreated, common.ResponseUser(http.StatusCreated, "Success melakukan simulasi pembayaran", nil))
 	}
 }
 
@@ -137,8 +180,8 @@ func (uc *PemesananUserController) GetAll() echo.HandlerFunc {
 func (uc *PemesananUserController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		pemesanaId := c.Param("pemesananid")
-		var req = entities.PemesananUserRequestCreateFormat{}
-
+		var req = entities.PemesananRequestUpdateFormat{}
+		c.Bind(&req)
 		err_repo := uc.repo.Update(&entities.PemesananUser{
 			PemesananId:     pemesanaId,
 			PemesananNama:   req.PemesananNama,
@@ -186,22 +229,22 @@ func (uc *PemesananUserController) GetAllDatatables() echo.HandlerFunc {
 			return c.JSON(http.StatusForbidden, mapping)
 		}
 		output := make(map[string]interface{})
-		output["draw"] = 1
+		output["draw"] = 0
 		output["recordsTotal"] = 0
 		output["recordsFiltered"] = 0
 		data := make([]interface{}, 0)
 		output["data"] = data
-		output["error"] = ""
 		res, count, err := uc.repo.GetAllDatatables()
 
 		if err != nil {
+
 			statusCode := http.StatusInternalServerError
 			errorMessage := "There is some problem from the server"
 			if err.Error() == "record not found" {
 				statusCode = http.StatusNotFound
 				errorMessage = err.Error()
 			}
-			return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, nil))
+			return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, output))
 		}
 
 		// res.CreatedAt = uc.TimeToUser(res.CreatedAt.(int64))
@@ -212,7 +255,17 @@ func (uc *PemesananUserController) GetAllDatatables() echo.HandlerFunc {
 			output["draw"] = 20
 			output["data"] = res
 			output["recordsTotal"] = count
-			output["recordsFiltered"] = 20
+			output["recordsFiltered"] = count
+		}
+		if len(res) == 0 {
+			output["draw"] = 1
+			pemesanann := []entities.PemesananUserResponseFormatDatatables{}
+			pemesanan := entities.PemesananUserResponseFormatDatatables{}
+			pemesanann = append(pemesanann, pemesanan)
+			output["data"] = pemesanann
+			output["status"] = 200
+
+			return c.JSON(http.StatusOK, output)
 		}
 
 		return c.JSON(http.StatusOK, output)

@@ -104,6 +104,9 @@ func (r *UserRepository) GetAllDatatables() ([]domain.UserResponseFormatDatatabl
 
 	res, err := r.GetCount()
 	if err != nil {
+		if err.Error() == "user is not found" {
+			return userr, 0, nil
+		}
 		return userr, 0, errors.New("Internal Server Eroor")
 	}
 	if res == 0 {

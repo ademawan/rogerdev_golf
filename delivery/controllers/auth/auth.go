@@ -162,6 +162,24 @@ func (ac *AuthController) LoginPage() echo.HandlerFunc {
 		path := os.Getenv("BASE_URL")
 		var dataMap = make(map[string]interface{})
 		dataMap["path"] = path
+		return c.Render(http.StatusOK, "loginuser.html", dataMap)
+
+	}
+}
+func (ac *AuthController) AdminRegisterPage() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		path := os.Getenv("BASE_URL")
+		var dataMap = make(map[string]interface{})
+		dataMap["path"] = path
+		return c.Render(http.StatusOK, "register.html", dataMap)
+
+	}
+}
+func (ac *AuthController) AdminLoginPage() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		path := os.Getenv("BASE_URL")
+		var dataMap = make(map[string]interface{})
+		dataMap["path"] = path
 		return c.Render(http.StatusOK, "login.html", dataMap)
 
 	}
@@ -171,7 +189,7 @@ func (ac *AuthController) RegisterPage() echo.HandlerFunc {
 		path := os.Getenv("BASE_URL")
 		var dataMap = make(map[string]interface{})
 		dataMap["path"] = path
-		return c.Render(http.StatusOK, "register.html", dataMap)
+		return c.Render(http.StatusOK, "registeruser.html", dataMap)
 
 	}
 }

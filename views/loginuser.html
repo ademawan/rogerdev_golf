@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.87.0">
-    <title>Login|Admin</title>
+    <title>Login|User</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
 
@@ -47,7 +47,7 @@
           </div>
       
           <button id="saveBtnLogin" class="w-100 btn btn-lg btn-primary">Sign in</button>
-          <div class="col mt-4"><a href="/admin/register">belum punya akun..?  Silahkan buat akun terlebih dahulu..</a></div>
+          <div class="col mt-4"><a href="/user/register">belum punya akun..?  Silahkan buat akun terlebih dahulu..</a></div>
 
         </form>
     </div>
@@ -73,7 +73,7 @@
 
                 $.ajax({
                     data: $('#formlogin').serialize(),
-                    url: "/admin/login",
+                    url: "/user/login",
                     type: "POST",
                     dataType: 'json',
                     beforeSend: function () {
@@ -96,7 +96,7 @@
 
                             localStorage.setItem("accessToken",data.data.token);
                             // var dataas=localStorage.getItem("accessToken")
-                            window.location = '/admin/user';
+                            window.location = '/user/pemesanan';
                          
                         }
                     
@@ -106,6 +106,21 @@
 
             })
 
+
+
+        
+
+
+            //batal
+            $('#saveBtnBatalPemesanan').click(function (e) {
+                $(this).html('Sending..');
+                e.preventDefault();
+                $('#formtambahpemesanan').trigger("reset");
+                $('#saveBtnBatalPemesanan').html('Batal');
+                $('#tombolPemesanan').trigger('click');
+                $(document).find('span.error-text').text('');
+
+            })
 
 
 

@@ -42,6 +42,19 @@ func (uc *PemesananController) Create() echo.HandlerFunc {
 
 		req := entities.PemesananRequestCreateFormat{}
 
+		role := middlewares.ExtractRoles(c)
+		if role != "1" {
+			mapping := make(map[string]interface{})
+			mapping["message"] = "unauthorize"
+			mapping["error"] = "error"
+			if role == "2" || role == "3" {
+				return c.JSON(http.StatusForbidden, mapping)
+			}
+			mapping["login"] = "0"
+			return c.JSON(http.StatusUnauthorized, mapping)
+		}
+		userIdToken := middlewares.ExtractTokenUserUid(c)
+
 		c.Bind(&req)
 		err := c.Validate(&req)
 
@@ -77,6 +90,15 @@ func (uc *PemesananController) Create() echo.HandlerFunc {
 			PemesananNoHp:   req.PemesananNoHp,
 			PemesananStatus: req.PemesananStatus,
 			PemesananAlamat: req.PemesananAlamat,
+			FirstPlayer:     req.FirstPlayer,
+			SecondPlayer:    req.SecondPlayer,
+			ThirdPlayer:     req.ThirdPlayer,
+			FourthPlayer:    req.FourthPlayer,
+			UserTipeId1:     req.UserTipeId1,
+			UserTipeId2:     req.UserTipeId2,
+			UserTipeId3:     req.UserTipeId3,
+			UserTipeId4:     req.UserTipeId4,
+			UserId:          userIdToken,
 		})
 		if err_repo != nil {
 			return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err_repo.Error(), nil))
@@ -137,7 +159,8 @@ func (uc *PemesananController) GetAll() echo.HandlerFunc {
 func (uc *PemesananController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		pemesanaId := c.Param("pemesananid")
-		var req = entities.PemesananRequestCreateFormat{}
+		var req = entities.PemesananRequestUpdateFormat{}
+		c.Bind(&req)
 
 		err_repo := uc.repo.Update(&entities.Pemesanan{
 			PemesananId:     pemesanaId,
@@ -148,6 +171,14 @@ func (uc *PemesananController) Update() echo.HandlerFunc {
 			PemesananNoHp:   req.PemesananNoHp,
 			PemesananStatus: req.PemesananStatus,
 			PemesananAlamat: req.PemesananAlamat,
+			FirstPlayer:     req.FirstPlayer,
+			SecondPlayer:    req.SecondPlayer,
+			ThirdPlayer:     req.ThirdPlayer,
+			FourthPlayer:    req.FourthPlayer,
+			UserTipeId1:     req.UserTipeId1,
+			UserTipeId2:     req.UserTipeId2,
+			UserTipeId3:     req.UserTipeId3,
+			UserTipeId4:     req.UserTipeId4,
 		})
 
 		if err_repo != nil {
@@ -216,9 +247,18 @@ func (uc *PemesananController) GetAllDatatables() echo.HandlerFunc {
 			output["draw"] = 20
 			output["data"] = res
 			output["recordsTotal"] = count
-			output["recordsFiltered"] = 20
+			output["recordsFiltered"] = count
 		}
+		if len(res) == 0 {
+			output["draw"] = 1
+			pemesanann := []entities.PemesananResponseFormatDatatables{}
+			pemesanan := entities.PemesananResponseFormatDatatables{}
+			pemesanann = append(pemesanann, pemesanan)
+			output["data"] = pemesanann
+			output["status"] = 200
 
+			return c.JSON(http.StatusOK, output)
+		}
 		return c.JSON(http.StatusOK, output)
 	}
 }

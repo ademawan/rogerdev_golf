@@ -119,7 +119,7 @@
         
           <div class="row my-3">
             <div class="col-md-12">
-              <button type="button" id="tombolPemesanan" class="btn linka d-inline mb-2" style="background-color: rgba(104, 91, 19, 0.782) " data-bs-toggle="collapse" data-bs-target="#tambahuser" aria-expanded="false" aria-controls="collapseExample">
+              <button type="button" id="tombolPemesanan" class="btn linka d-inline mb-2" style="background-color: rgba(104, 91, 19, 0.782) " data-bs-toggle="collapse" data-bs-target="#tambahpemesanan" aria-expanded="false" aria-controls="collapseExample">
                 Tambah Pemesanan
               </button>
               <div hidden>
@@ -128,7 +128,7 @@
                 </button>
             </div>
               
-            <div class="col-md-12 collapse" id="tambahuser">
+            <div class="col-md-12 collapse" id="tambahpemesanan">
               <div class="col-md">
                 <form class="form-horizontal form-disable-enter" name="formtambahpemesanan" id="formtambahpemesanan">
                   <input type="hidden" id="pemesanan_id" name="pemesanan_id" class="form-control" value="">
@@ -149,6 +149,105 @@
                               </div>
                             </div>
                           </div>
+
+                          <hr class="dropdown-divider">
+
+                            <div class="col-md-12" >
+                              <div class="mb-3 row">
+                                <label for="inputtext" class="col-sm-3 col-form-label">First Player</label>
+                                <div class="col-sm-9">
+                                  <input type="text" name="first_player" class="form-control" id="first_player">
+                                  <span class="text-danger error-text first_player_error"></span>
+        
+                                </div>
+                              </div>
+                            </div>
+
+                          <div class="col-md-12" >
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">User Tipe </label>
+                              <div class="col-sm">
+                                <select class="form-select bg-secondary text-light" id="user_tipe_id1" name="user_tipe_id1">
+                                  <option value="2">Member</option>
+                                  <option value="3" selected>Guest</option>
+                                </select>
+                              </div>  
+                            </div>
+                          </div>
+
+
+                            <div class="col-md-12" >
+                              <div class="mb-3 row">
+                                <label for="inputtext" class="col-sm-3 col-form-label">Second Player</label>
+                                <div class="col-sm-9">
+                                  <input type="text" name="second_player" class="form-control" id="second_player">
+                                  <span class="text-danger error-text second_player_error"></span>
+        
+                                </div>
+                              </div>
+                            </div>
+                          
+
+                          <div class="col-md-12" >
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">User Tipe </label>
+                              <div class="col-sm">
+                                <select class="form-select bg-secondary text-light" id="user_tipe_id2" name="user_tipe_id2">
+                                  <option value="2">Member</option>
+                                  <option value="3" selected>Guest</option>
+                                </select>
+                              </div>  
+                            </div>
+                          </div>
+
+                            <div class="col-md-12" >
+                              <div class="mb-3 row">
+                                <label for="inputtext" class="col-sm-3 col-form-label">Third Player</label>
+                                <div class="col-sm-9">
+                                  <input type="text" name="third_player" class="form-control" id="third_player">
+                                  <span class="text-danger error-text third_player_error"></span>
+        
+                                </div>
+                              </div>
+                            </div>
+                          
+                          <div class="col-md-12" >
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">User Tipe </label>
+                              <div class="col-sm">
+                                <select class="form-select bg-secondary text-light" id="user_tipe_id3" name="user_tipe_id3">
+                                  <option value="2">Member</option>
+                                  <option value="3" selected>Guest</option>
+                                </select>
+                              </div>  
+                            </div>
+                          </div>
+
+                            <div class="col-md-12" >
+                              <div class="mb-3 row">
+                                <label for="inputtext" class="col-sm-3 col-form-label">Fourth Player</label>
+                                <div class="col-sm-9">
+                                  <input type="text" name="fourth_player" class="form-control" id="fourth_player">
+                                  <span class="text-danger error-text fourth_player_error"></span>
+        
+                                </div>
+                              </div>
+                            </div>
+
+                          <div class="col-md-12" >
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">User Tipe </label>
+                              <div class="col-sm">
+                                <select class="form-select bg-secondary text-light" id="user_tipe_id4" name="user_tipe_id4">
+                                  <option value="2">Member</option>
+                                  <option value="3" selected>Guest</option>
+                                </select>
+                              </div>  
+                            </div>
+                          </div>
+
+
+                          <hr class="dropdown-divider">
 
                         <div class="col-md-12">
                             <div class="mb-3 row">
@@ -226,6 +325,14 @@
                       <div class="row">
                         <small>
                         <span class="text-danger error-text pemesanan_nama_errornotif"></span>
+                        <span class="text-danger error-text first_player_errornotif"></span>
+                        <span class="text-danger error-text user_tipe_id1_errornotif"></span>
+                        <span class="text-danger error-text second_player_errornotif"></span>
+                        <span class="text-danger error-text user_tipe_id2_errornotif"></span>
+                        <span class="text-danger error-text third_player__errornotif"></span>
+                        <span class="text-danger error-text user_tipe_id3_errornotif"></span>
+                        <span class="text-danger error-text fourth_player_errornotif"></span>
+                        <span class="text-danger error-text user_tipe_id4_errornotif"></span>
                         <span class="text-danger error-text pemesanan_date_errornotif"></span>
                         <span class="text-danger error-text pemesanan_time_errornotif"></span>
                         <span class="text-danger error-text pemesanan_email_errornotif"></span>
@@ -259,6 +366,7 @@
                   <th scope="col">Pemesanan Status</th>
                   <th scope="col">Pemesanan Alamat</th>
                   <th scope="col">Dibuat Pada</th>
+                  <th scope="col">Status Pembayaran</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -268,6 +376,25 @@
             </table>
           </div>
             
+
+            <!--  -->
+            <div class="modal fade" id="modalLogout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">KELUAR AKUN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Yakin untuk keluar?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="btnLogout" class=" btn btn-primary">Logout</button>
+                  </div>
+                </div>
+              </div>
+            </div>
       
       </div>
 </div>
@@ -317,10 +444,13 @@ $(document).ready( function () {
                   window.location = '/admin/user';
               }
               if (data.status==401){
-                window.location = '/login';
+                window.location = '/user/login';
               }
              }
        },
+       language: {
+        emptyTable: "No data available in table",
+    },
        columns: [
                { data: 'pemesanan_nama', name: 'pemesanan_nama', class:'text-center' },
                { data: 'pemesanan_date', name: 'pemesanan_date' },
@@ -330,10 +460,11 @@ $(document).ready( function () {
                { data: 'pemesanan_status', name: 'pemesanan_status' },
                { data: 'pemesanan_alamat', name: 'pemesanan_alamat' },
                { data: 'created_at', name: 'created_at' },
+               { data: 'status_pembayaran', name: 'status_pembayaran' },
                { data: 'action', name: 'action' },            
            ],
      });
- 
+
      $('#tombolRefreshTable').click(function(){
        table.draw();
      });
@@ -363,7 +494,7 @@ $(document).ready( function () {
        $('#saveBtnTambahPemesanan').removeAttr('hidden'); 
      });
  
-     // Tambah user
+     // Tambah pemesanan
      $('#saveBtnTambahPemesanan').click( function(e){
  
        e.preventDefault();
@@ -374,8 +505,10 @@ $(document).ready( function () {
          url: "/user/pemesanan/ajax",
          type: "POST",
          dataType: 'json',
-         beforeSend:function(){
+         beforeSend:function(xhr){
                $(document).find('span.error-text').text('');
+               var tokenuser=localStorage.getItem("accessToken")
+               xhr.setRequestHeader('Authorization', 'Bearer '+tokenuser);
              },
          success: function (data) {
  
@@ -398,6 +531,14 @@ $(document).ready( function () {
                      
                  }
          },
+         error:function (data) {     
+              if (data.status==403){
+                  window.location = '/admin/user';
+              }
+              if (data.status==401){
+                window.location = '/user/login';
+              }
+             },
          
        });
  
@@ -405,7 +546,7 @@ $(document).ready( function () {
  
  
      //edit
-     $('body').on('click', '.editUser', function () {
+     $('body').on('click', '.editPemesanan', function () {
        $('#saveBtnTambahPemesanan').attr('hidden', 'true'); 
        $('#saveBtnUpdatePemesanan').removeAttr('hidden'); 
        $('#saveBtnUpdatePemesanan').html('Update');
@@ -414,24 +555,27 @@ $(document).ready( function () {
  
  
        var pemesanan_id = $(this).data('id');
-       $.get("/user/pemesanan/ajax" +'/' + pemesanan_id +'/edit', function (data) {
-         $('#tambahuser').addClass('show');
-         var dataNew = data.data
- 
-           $('#pemesanan_id').val(dataNew.pemesanan_id);
-           $('#pemesanan_nama').val(dataNew.pemesanan_nama);
-           $('#pemesanan_date').val(dataNew.pemesanan_date);
-           $('#pemesanan_time').val(dataNew.pemesanan_time);
-           $('#pemesanan_email').val(dataNew.pemesanan_email);
-           $('#pemesanan_no_hp').val(dataNew.pemesanan_no_hp);
-           $('#pemesanan_status').val(dataNew.pemesanan_status);
-           $('#pemesanan_alamat').val(dataNew.pemesanan_alamat);
-
- 
-           $("html, body").animate({ scrollTop: 0 }, "slow");
-           // $('#scroll-ku').scrollTop = 0;
-           
-       })
+       $.get("/user/pemesanan/ajax" +'/' + pemesanan_id +'/update', function (data) {
+        if (data.code==201){
+          var r = confirm("Pembayaran Sukses... ");
+                if (r == true) {
+                    window.location = '/user/pemesanan';
+                }
+                else{
+                  window.location = '/user/pemesanan';
+                }
+       }
+       else{
+        var r = confirm("Pembayaran Gagal... ");
+                if (r == true) {
+                    window.location = '/user/pemesanan';
+                }
+                else{
+                  window.location = '/user/pemesanan';
+                }
+       }
+      
+      })
     });
  
  
@@ -491,7 +635,7 @@ $(document).ready( function () {
  
  
      //delete
-     $('body').on('click', '.deleteUser', function () {
+     $('body').on('click', '.deletePemesanan', function () {
       
        var pemesanan_id = $(this).data("id");
        var r = confirm("Are You sure want to delete !");
@@ -514,7 +658,10 @@ $(document).ready( function () {
           table.draw();
         }  
    });
- 
+   $('#btnLogout').click( function(e){
+    localStorage.removeItem("accessToken")
+    window.location = '/user/login';
+     })
  
  
    } );

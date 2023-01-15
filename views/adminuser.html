@@ -48,7 +48,7 @@
             <div class="position-sticky pt-3">
               <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">
+                    <a class="nav-link" href="/admin/user">
                       <span data-feather="home"></span>BERANDA
                     </a>
                   </li>
@@ -256,6 +256,25 @@
             </table>
           </div>
             
+
+            <!--  -->
+            <div class="modal fade" id="modalLogout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">KELUAR AKUN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Yakin untuk keluar?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="btnLogout" class=" btn btn-primary">Logout</button>
+                  </div>
+                </div>
+              </div>
+            </div>
       
       </div>
 </div>
@@ -303,12 +322,12 @@ $(document).ready( function () {
             headers: { 'Authorization': 'Bearer '+token},
              error:function (data) {     
                   if (data.status==401){
-                        window.location = '/login';                        
+                        window.location = '/user/login';                        
                   }
                   if (data.status==403){
                         window.location = '/user/pemesanan';
                  }     
-             }    
+             } 
        },
        columns: [
                { data: 'user_nama', name: 'user_nama', class:'text-center' },
@@ -319,7 +338,7 @@ $(document).ready( function () {
                { data: 'action', name: 'action' },            
            ],
      });
- 
+
      $('#tombolRefreshTable').click(function(){
        table.draw();
      });
@@ -499,6 +518,11 @@ $(document).ready( function () {
    });
  
  
+   $('#btnLogout').click( function(e){
+    localStorage.removeItem("accessToken")
+    window.location = '/admin/login';
+     })
+
  
    } );
 

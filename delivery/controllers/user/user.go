@@ -247,12 +247,21 @@ func (uc *UserController) GetAllDatatables() echo.HandlerFunc {
 		// res.CreatedAt = uc.TimeToUser(res.CreatedAt.(int64))
 		// res.UpdatedAt = uc.TimeToUser(res.UpdatedAt.(int64))
 		// res.DeletedAt = uc.TimeToUser(res.DeletedAt.(int64))
+		if len(res) == 0 {
+			output["draw"] = 1
+			userr := []entities.UserResponseFormatDatatables{}
+			user := entities.UserResponseFormatDatatables{}
+			userr = append(userr, user)
+			output["data"] = userr
+			output["status"] = 200
 
+			return c.JSON(http.StatusOK, output)
+		}
 		output["start"] = 1
 		output["draw"] = 20
 		output["data"] = res
 		output["recordsTotal"] = count
-		output["recordsFiltered"] = 20
+		output["recordsFiltered"] = count
 
 		return c.JSON(http.StatusOK, output)
 	}
