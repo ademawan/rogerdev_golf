@@ -2,6 +2,7 @@ package auth
 
 import (
 	"net/http"
+	"os"
 	"rogerdev_golf/delivery/controllers/common"
 	"rogerdev_golf/entities"
 	"rogerdev_golf/middlewares"
@@ -25,6 +26,7 @@ func New(repo auth.Auth) *AuthController {
 func (ac *AuthController) Login() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		Userlogin := LoginReqFormat{}
+		// response:=entities.UserResponseFormat{}
 
 		c.Bind(&Userlogin)
 		err_validate := c.Validate(&Userlogin)
@@ -46,10 +48,9 @@ func (ac *AuthController) Login() echo.HandlerFunc {
 		}
 		token, err := middlewares.GenerateToken(checkedUser)
 		response := UserLoginResponse{
-			User_uid: checkedUser.UserUid,
-			Name:     checkedUser.Name,
-			Email:    checkedUser.Email,
-			Gender:   checkedUser.Gender,
+			User_uid: checkedUser.UserId,
+			Name:     checkedUser.UserNama,
+			Email:    checkedUser.UserEmail,
 			Token:    token,
 		}
 
@@ -65,7 +66,7 @@ func (ac *AuthController) Logout() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userUid := middlewares.ExtractTokenUserUid(c)
 		log.Info(userUid)
-		token, _ := middlewares.GenerateToken(entities.User{UserUid: "xxx"})
+		token, _ := middlewares.GenerateToken(entities.User{UserId: "xxx"})
 		log.Info(token)
 
 		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "Logout successfully", nil))
@@ -136,15 +137,7 @@ func (ac *AuthController) Logout() echo.HandlerFunc {
 
 //		}
 //	}
-func (ac *AuthController) Index() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
-		// return c.Render(http.StatusOK, "index.html", data)
-		return c.Render(http.StatusOK, "index.html", data)
 
-	}
-}
 func (ac *AuthController) Post() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		type dataMap map[string]interface{}
@@ -155,42 +148,66 @@ func (ac *AuthController) Post() echo.HandlerFunc {
 }
 func (ac *AuthController) Dashboard() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
-		return c.Render(http.StatusOK, "blank.html", data)
+		path := os.Getenv("BASE_URL")
+		var dataMap = make(map[string]interface{})
+		dataMap["path"] = path
+
+		return c.Render(http.StatusOK, "admindashboard.html", dataMap)
 
 	}
 }
+
 func (ac *AuthController) LoginPage() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
-		return c.Render(http.StatusOK, "login.html", data)
+		path := os.Getenv("BASE_URL")
+		var dataMap = make(map[string]interface{})
+		dataMap["path"] = path
+		return c.Render(http.StatusOK, "login.html", dataMap)
 
 	}
 }
 func (ac *AuthController) RegisterPage() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
-		return c.Render(http.StatusOK, "register.html", data)
+		path := os.Getenv("BASE_URL")
+		var dataMap = make(map[string]interface{})
+		dataMap["path"] = path
+		return c.Render(http.StatusOK, "register.html", dataMap)
 
 	}
 }
 func (ac *AuthController) CoverPage() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
-		return c.Render(http.StatusOK, "coverundangan.html", data)
+		path := os.Getenv("BASE_URL")
+
+		var dataMap = make(map[string]interface{})
+		dataMap["path"] = path
+		return c.Render(http.StatusOK, "coverundangan.html", dataMap)
 
 	}
 }
 
 // /new
+func (ac *AuthController) Index() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		dataMap := make(map[string]interface{})
+		dataMap["companyName"] = "Bogor Raya Club"
+		dataMap["title"] = "Beranda"
+		path := os.Getenv("BASE_URL")
+		dataMap["path"] = path
+		data := dataMap
+		// return c.Render(http.StatusOK, "index.html", data)
+		return c.Render(http.StatusOK, "index.html", data)
+
+	}
+}
 func (ac *AuthController) About() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
+		dataMap := make(map[string]interface{})
+		dataMap["companyName"] = "Bogor Raya Club"
+		dataMap["title"] = "Tentang"
+		path := os.Getenv("BASE_URL")
+		dataMap["path"] = path
+		data := dataMap
 		// return c.Render(http.StatusOK, "index.html", data)
 		return c.Render(http.StatusOK, "about.html", data)
 
@@ -198,8 +215,12 @@ func (ac *AuthController) About() echo.HandlerFunc {
 }
 func (ac *AuthController) Service() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
+		dataMap := make(map[string]interface{})
+		dataMap["companyName"] = "Bogor Raya Club"
+		dataMap["title"] = "Fasilitas"
+		path := os.Getenv("BASE_URL")
+		dataMap["path"] = path
+		data := dataMap
 		// return c.Render(http.StatusOK, "index.html", data)
 		return c.Render(http.StatusOK, "services.html", data)
 
@@ -207,8 +228,12 @@ func (ac *AuthController) Service() echo.HandlerFunc {
 }
 func (ac *AuthController) Project() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
+		dataMap := make(map[string]interface{})
+		dataMap["companyName"] = "Bogor Raya Club"
+		dataMap["title"] = "Galeri"
+		path := os.Getenv("BASE_URL")
+		dataMap["path"] = path
+		data := dataMap
 		// return c.Render(http.StatusOK, "index.html", data)
 		return c.Render(http.StatusOK, "projects.html", data)
 
@@ -216,8 +241,12 @@ func (ac *AuthController) Project() echo.HandlerFunc {
 }
 func (ac *AuthController) Blog() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
+		dataMap := make(map[string]interface{})
+		dataMap["companyName"] = "Bogor Raya Club"
+		dataMap["title"] = "Blog"
+		path := os.Getenv("BASE_URL")
+		dataMap["path"] = path
+		data := dataMap
 		// return c.Render(http.StatusOK, "index.html", data)
 		return c.Render(http.StatusOK, "blog.html", data)
 
@@ -225,10 +254,41 @@ func (ac *AuthController) Blog() echo.HandlerFunc {
 }
 func (ac *AuthController) Contact() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		type dataMap map[string]interface{}
-		data := dataMap{"message": "Hello World!"}
+		dataMap := make(map[string]interface{})
+		dataMap["companyName"] = "Bogor Raya Club"
+		dataMap["title"] = "Kontak"
+		path := os.Getenv("BASE_URL")
+		dataMap["path"] = path
+		data := dataMap
 		// return c.Render(http.StatusOK, "index.html", data)
 		return c.Render(http.StatusOK, "contact.html", data)
 
 	}
+}
+func (ac *AuthController) Daftar() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		dataMap := make(map[string]interface{})
+		dataMap["companyName"] = "Bogor Raya Club"
+		dataMap["title"] = "Daftar"
+		path := os.Getenv("BASE_URL")
+		dataMap["path"] = path
+		data := dataMap
+		// return c.Render(http.StatusOK, "index.html", data)
+		return c.Render(http.StatusOK, "daftar.html", data)
+
+	}
+}
+func (ac *AuthController) GetFooter() string {
+	text := `func (ac *AuthController) Contact() echo.HandlerFunc {
+		return func(c echo.Context) error {
+			dataMap := make(map[string]interface{})
+			dataMap["companyName"] = "Bogor Raya Club"
+			dataMap["title"] = "Kontak"
+			data := dataMap
+			// return c.Render(http.StatusOK, "index.html", data)
+			return c.Render(http.StatusOK, "contact.html", data)
+	
+		}
+	}`
+	return text
 }

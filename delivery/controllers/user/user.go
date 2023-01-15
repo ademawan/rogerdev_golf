@@ -1,10 +1,11 @@
 package user
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 	"rogerdev_golf/delivery/controllers/common"
 	"rogerdev_golf/entities"
-	"rogerdev_golf/middlewares"
 	"rogerdev_golf/repository/user"
 	"strconv"
 	"time"
@@ -26,14 +27,23 @@ func New(repository user.User /*, S3 *session.Session*/) *UserController {
 		// conn: S3,
 	}
 }
+func (uc *UserController) UI() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		path := os.Getenv("BASE_URL")
+		var dataMap = make(map[string]interface{})
+		dataMap["path"] = path
 
-func (ac *UserController) Register() echo.HandlerFunc {
+		return c.Render(http.StatusOK, "adminuser.html", dataMap)
+
+	}
+}
+func (uc *UserController) Register() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		user := CreateUserRequestFormat{}
+		req := entities.UserRequestCreateFormat{}
 
-		c.Bind(&user)
-		err := c.Validate(&user)
+		c.Bind(&req)
+		err := c.Validate(&req)
 
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.ResponseUser(http.StatusBadRequest, "There is some problem from input", nil))
@@ -46,7 +56,7 @@ func (ac *UserController) Register() echo.HandlerFunc {
 
 		// if file != nil {
 		// 	src, _ := file.Open()
-		// 	link, errU := utils.Upload(ac.conn, src, *file)
+		// 	link, errU := utils.Upload(uc.conn, src, *file)
 		// 	if errU != nil {
 		// 		return c.JSON(http.StatusBadRequest, common.BadRequest(http.StatusBadRequest, "Upload Failed", nil))
 		// 	}
@@ -54,46 +64,55 @@ func (ac *UserController) Register() echo.HandlerFunc {
 		// } else if file == nil {
 		// 	user.Image = ""
 		// }
-		timeLocation, _ := time.LoadLocation("Asia/Jakarta")
-		timeNow := time.Now().In(timeLocation).Unix()
+		// timeLocation, _ := time.LoadLocation("Asia/Jakarta")
+		// timeNow := time.Now().In(timeLocation).Unix()
 
-		res, err_repo := ac.repo.Register(entities.User{
-			Name:      user.Name,
-			Email:     user.Email,
-			Password:  user.Password,
-			Address:   user.Address,
-			Gender:    user.Gender,
-			CreatedAt: timeNow,
-			UpdatedAt: int64(0),
-			DeletedAt: int64(0),
-
-			// response.Image = res.Image
-
+		userId := "UID00" + strconv.Itoa(int(time.Now().Unix()))
+		err_repo := uc.repo.Create(entities.User{
+			UserId:       userId,
+			UserNama:     req.UserNama,
+			UserEmail:    req.UserEmail,
+			UserPassword: req.UserPassword,
+			UserAlamat:   req.UserAlamat,
+			UserNoHp:     req.UserNoHp,
+			UserTipeId:   req.UserTipeId,
 		})
-
 		if err_repo != nil {
 			return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err_repo.Error(), nil))
 		}
 
-		response := UserCreateResponse{}
-		response.UserUid = res.UserUid
-		response.Name = res.Name
-		response.Email = res.Email
-		response.Address = res.Address
-		response.Gender = res.Gender
-		// response.Roles = res.Roles
-		// response.Image = res.Image
-
-		return c.JSON(http.StatusCreated, common.ResponseUser(http.StatusCreated, "Success create user", response))
+		return c.JSON(http.StatusCreated, common.ResponseUser(http.StatusCreated, "Success create user", nil))
 
 	}
 }
 
-func (ac *UserController) GetByUid() echo.HandlerFunc {
+func (uc *UserController) GetByUid() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userUid := middlewares.ExtractTokenUserUid(c)
+		userId := c.Param("userid")
+		fmt.Println(userId, "HAAAALLLOOOOO")
+		res, err := uc.repo.Get(userId)
+		if err != nil {
+			statusCode := http.StatusInternalServerError
+			errorMessage := "There is some problem from the server"
+			if err.Error() == "user not found" {
+				statusCode = http.StatusNotFound
+				errorMessage = err.Error()
+			}
+			return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, nil))
+		}
 
-		res, err := ac.repo.GetByUid(userUid)
+		// res.CreatedAt = uc.TimeToUser(res.CreatedAt.(int64))
+		// res.UpdatedAt = uc.TimeToUser(res.UpdatedAt.(int64))
+		// res.DeletedAt = uc.TimeToUser(res.DeletedAt.(int64))
+
+		return c.JSON(http.StatusOK, common.ResponseUser(http.StatusOK, "Success get user", res))
+	}
+}
+
+func (uc *UserController) GetAll() echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		res, err := uc.repo.GetAll()
 
 		if err != nil {
 			statusCode := http.StatusInternalServerError
@@ -105,33 +124,19 @@ func (ac *UserController) GetByUid() echo.HandlerFunc {
 			return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, nil))
 		}
 
-		res.CreatedAt = ac.TimeToUser(res.CreatedAt.(int64))
-		res.UpdatedAt = ac.TimeToUser(res.UpdatedAt.(int64))
-		res.DeletedAt = ac.TimeToUser(res.DeletedAt.(int64))
+		// res.CreatedAt = uc.TimeToUser(res.CreatedAt.(int64))
+		// res.UpdatedAt = uc.TimeToUser(res.UpdatedAt.(int64))
+		// res.DeletedAt = uc.TimeToUser(res.DeletedAt.(int64))
 
 		return c.JSON(http.StatusOK, common.ResponseUser(http.StatusOK, "Success get user", res))
 	}
 }
 
-// func (ac *UserController) Search() echo.HandlerFunc {
-// 	return func(c echo.Context) error {
-
-// 		q := c.QueryParam("q")
-
-// 		res, err := ac.repo.Search(q)
-
-// 		if err != nil {
-// 			return c.JSON(http.StatusInternalServerError, common.ResponseUser(http.StatusInternalServerError, "internal server error for get all "+err.Error(), nil))
-// 		}
-
-// 		return c.JSON(http.StatusOK, common.ResponseUser(http.StatusOK, "Success Get all Room", res))
-// 	}
-// }
-
-func (ac *UserController) Update() echo.HandlerFunc {
+func (uc *UserController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userUid := middlewares.ExtractTokenUserUid(c)
-		var newUser = UpdateUserRequestFormat{}
+		userId := c.Param("userid")
+
+		var newUser = entities.UserRequestUpdateFormat{}
 		c.Bind(&newUser)
 
 		err := c.Validate(&newUser)
@@ -139,7 +144,7 @@ func (ac *UserController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.ResponseUser(http.StatusBadRequest, "There is some problem from input", nil))
 		}
 
-		// resGet, errGet := ac.repo.GetById(user_uid)
+		// resGet, errGet := uc.repo.GetById(user_uid)
 		// if errGet != nil {
 		// 	log.Info(resGet)
 		// }
@@ -153,12 +158,12 @@ func (ac *UserController) Update() echo.HandlerFunc {
 		// 		var updateImage = resGet.Image
 		// 		updateImage = strings.Replace(updateImage, "https://airbnb-app.s3.ap-southeast-1.amazonaws.com/", "", -1)
 
-		// 		var resUp = utils.UpdateUpload(ac.conn, updateImage, src, *file)
+		// 		var resUp = utils.UpdateUpload(uc.conn, updateImage, src, *file)
 		// 		if resUp != "success to update image" {
 		// 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(http.StatusInternalServerError, "There is some error on server"+resUp, nil))
 		// 		}
 		// 	} else if resGet.Image == "" {
-		// 		var image, errUp = utils.Upload(ac.conn, src, *file)
+		// 		var image, errUp = utils.Upload(uc.conn, src, *file)
 		// 		if errUp != nil {
 		// 			return c.JSON(http.StatusBadRequest, common.BadRequest(http.StatusBadRequest, "Upload Failed", nil))
 		// 		}
@@ -166,12 +171,13 @@ func (ac *UserController) Update() echo.HandlerFunc {
 		// 	}
 		// }
 
-		res, err_repo := ac.repo.Update(userUid, entities.User{
-			Name:     newUser.Name,
-			Email:    newUser.Email,
-			Password: newUser.Password,
-			Address:  newUser.Address,
-			Gender:   newUser.Gender,
+		err_repo := uc.repo.Update(&entities.User{
+			UserId:     userId,
+			UserNama:   newUser.UserNama,
+			UserEmail:  newUser.UserEmail,
+			UserAlamat: newUser.UserAlamat,
+			UserNoHp:   newUser.UserNoHp,
+			UserTipeId: newUser.UserTipeId,
 			// Image:    newUser.Image,
 		})
 
@@ -179,23 +185,18 @@ func (ac *UserController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.ResponseUser(http.StatusInternalServerError, "There is some error on server", nil))
 		}
 
-		response := UserUpdateResponse{}
-		response.UserUid = res.UserUid
-		response.Name = res.Name
-		response.Email = res.Email
-		response.Address = res.Address
-		response.Gender = res.Gender
 		// response.Roles = res.Roles
 		// response.Image = res.Image
 
-		return c.JSON(http.StatusOK, common.ResponseUser(http.StatusOK, "Success update user", response))
+		return c.JSON(http.StatusOK, common.ResponseUser(http.StatusOK, "Success update user", nil))
 	}
 }
 
-func (ac *UserController) Delete() echo.HandlerFunc {
+func (uc *UserController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userUid := middlewares.ExtractTokenUserUid(c)
-		err := ac.repo.Delete(userUid)
+		userId := c.Param("userid")
+
+		_, err := uc.repo.Delete(userId)
 
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.ResponseUser(http.StatusInternalServerError, "There is some error on server", nil))
@@ -205,12 +206,51 @@ func (ac *UserController) Delete() echo.HandlerFunc {
 	}
 }
 
-// func (ac *UserController) Dummy() echo.HandlerFunc {
+func (uc *UserController) GetAllDatatables() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// userUid := middlewares.ExtractTokenUserUid(c)
+
+		output := make(map[string]interface{})
+		output["draw"] = 1
+		output["recordsTotal"] = 0
+		output["recordsFiltered"] = 0
+		data := make([]interface{}, 0)
+		output["data"] = data
+		output["error"] = ""
+
+		res, count, err := uc.repo.GetAllDatatables()
+		fmt.Println(res)
+		if err != nil {
+			statusCode := http.StatusInternalServerError
+			errorMessage := "There is some problem from the server"
+			if err.Error() == "record not found" {
+				statusCode = http.StatusNotFound
+				errorMessage = err.Error()
+			}
+			return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, output))
+
+		}
+
+		// res.CreatedAt = uc.TimeToUser(res.CreatedAt.(int64))
+		// res.UpdatedAt = uc.TimeToUser(res.UpdatedAt.(int64))
+		// res.DeletedAt = uc.TimeToUser(res.DeletedAt.(int64))
+
+		output["start"] = 1
+		output["draw"] = 20
+		output["data"] = res
+		output["recordsTotal"] = count
+		output["recordsFiltered"] = 20
+
+		return c.JSON(http.StatusOK, output)
+	}
+}
+
+// func (uc *UserController) Dummy() echo.HandlerFunc {
 // 	return func(c echo.Context) error {
 
 // 		q, _ := strconv.Atoi(c.QueryParam("length"))
 
-// 		result := ac.repo.Dummy(q)
+// 		result := uc.repo.Dummy(q)
 // 		if !result {
 // 			return c.JSON(http.StatusInternalServerError, common.ResponseUser(http.StatusInternalServerError, "There is some error on server", nil))
 // 		}

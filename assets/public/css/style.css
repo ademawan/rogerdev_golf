@@ -1,0 +1,44 @@
+.logo{
+    width: 100px;
+}
+.dropdown-item:active{
+    background-color: orange !important;
+}
+.active{
+    background-color: rgba(243, 162, 11, 0.782) !important;
+}
+
+.linka:hover{
+    background-color: rgba(204, 179, 39, 0.782) !important;
+}
+
+
+thead {
+    display: table-header-group;
+    vertical-align: middle !important;
+    border-color: inherit;
+    }
+/* thead tr:nth(2){
+    border: none !important;
+    border-style: none !important;
+} */
+.btn-danger{
+    background-color: rgb(235, 112, 75) !important;
+}
+
+.btn-danger:hover{
+    background-color: rgb(235, 57, 17) !important;
+}
+
+.btn-success{
+    background-color: rgb(68, 138, 11) !important;
+
+}
+.btn-success:hover{
+    background-color: rgb(121, 253, 13) !important;
+}
+
+.btn-primary{
+    background-color: rgb(94, 146, 245) !important;
+
+}

@@ -1,13 +1,14 @@
 package user
 
-import "rogerdev_golf/entities"
+import (
+	"rogerdev_golf/entities"
+)
 
 type User interface {
-	Register(user entities.User) (entities.User, error)
-	GetByUid(userUid string) (entities.User, error)
-	Update(userUid string, newUser entities.User) (entities.User, error)
-	Delete(userUid string) error
-	//jika diperlukan
-	// Search(q string) ([]entities.User, error)
-	// Dummy(length int) bool
+	Create(user entities.User) error
+	Get(userId string) (entities.UserResponseFormat, error)
+	GetAll() ([]entities.UserResponseFormat, error)
+	GetAllDatatables() ([]entities.UserResponseFormatDatatables, int, error)
+	Update(user *entities.User) error
+	Delete(userId string) (int64, error)
 }

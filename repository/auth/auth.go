@@ -1,19 +1,19 @@
 package auth
 
 import (
+	"database/sql"
+	"fmt"
 	"rogerdev_golf/entities"
 	"rogerdev_golf/middlewares"
 
 	"errors"
-
-	"gorm.io/gorm"
 )
 
 type AuthDb struct {
-	db *gorm.DB
+	db *sql.DB
 }
 
-func New(db *gorm.DB) *AuthDb {
+func New(db *sql.DB) *AuthDb {
 	return &AuthDb{
 		db: db,
 	}
@@ -21,12 +21,13 @@ func New(db *gorm.DB) *AuthDb {
 
 func (ad *AuthDb) Login(email, password string) (entities.User, error) {
 	user := entities.User{}
-
-	if err := ad.db.Model(&user).Where("email = ?", email).First(&user).Error; err != nil {
-		return user, errors.New("email not found")
+	fmt.Println(email, password)
+	query := `SELECT * from user Where user_email=?`
+	err := ad.db.QueryRow(query, email).Scan(&user.UserId, &user.UserNama, &user.UserNama, &user.UserEmail, &user.UserAlamat, &user.UserNoHp, &user.UserTipeId, &user.IsUser, &user.CreatedAt)
+	if err != nil {
+		return user, errors.New("Internal Server Error")
 	}
-
-	match := middlewares.CheckPasswordHash(password, user.Password)
+	match := middlewares.CheckPasswordHash(password, user.UserPassword)
 
 	if !match {
 		return user, errors.New("incorrect password")

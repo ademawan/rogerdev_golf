@@ -1,15 +1,15 @@
 package utils
 
 import (
+	"database/sql"
 	"fmt"
-	config "rogerdev_golf/configs"
+	"rogerdev_golf/configs"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/gommon/log"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
-func InitDB(config *config.AppConfig) *gorm.DB {
+func InitDB(config *configs.AppConfig) *sql.DB {
 
 	connectionString := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v",
 		config.Database.Username,
@@ -18,14 +18,16 @@ func InitDB(config *config.AppConfig) *gorm.DB {
 		config.Database.Port,
 		config.Database.Name,
 	)
-	fmt.Println(connectionString, "hallo")
-	DB, err := gorm.Open(mysql.Open(connectionString) /* &gorm.Config{DisableForeignKeyConstraintWhenMigrating: true} */)
-
+	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		log.Info("error in connect database : ", err)
 		panic(err)
 	}
+	// defer db.Close()
+
+	// fmt.Println(connectionString, "hallo")
+	// DB, err := gorm.Open(mysql.Open(connectionString) /* &gorm.Config{DisableForeignKeyConstraintWhenMigrating: true} */)
 
 	// AutoMigrate(DB)
-	return DB
+	return db
 }

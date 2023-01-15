@@ -12,12 +12,12 @@ import (
 )
 
 func GenerateToken(u entities.User) (string, error) {
-	if u.UserUid == "" {
-		return "cannot Generate token", errors.New("user_uid == null")
+	if u.UserId == "" {
+		return "cannot Generate token", errors.New("user_id == null")
 	}
 
 	codes := jwt.MapClaims{
-		"user_uid": u.UserUid,
+		"user_id": u.UserId,
 		// "email":    u.Email,
 		// "password": u.Password,
 		"exp":  time.Now().Add(time.Hour * 24).Unix(),
@@ -32,7 +32,7 @@ func ExtractTokenUserUid(e echo.Context) string {
 	user := e.Get("user").(*jwt.Token) //convert to jwt token from interface
 	if user.Valid {
 		codes := user.Claims.(jwt.MapClaims)
-		id := codes["user_uid"].(string)
+		id := codes["user_id"].(string)
 		return id
 	}
 	return ""
