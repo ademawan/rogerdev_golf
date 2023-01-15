@@ -262,7 +262,8 @@
 
 $(document).ready( function () {
 
-    
+  var token=localStorage.getItem("accessToken")
+
     var table = $('#myTable').DataTable( {
        
        processing: true,
@@ -271,7 +272,21 @@ $(document).ready( function () {
        scrollX: true,
        scrollY: true,
      
-       ajax: "/admin/fasilitas/datatables",
+       ajax:{
+            url: "/admin/fasilitas/datatables",
+            type: "GET",
+            headers: { 'Authorization': 'Bearer '+token},
+             error:function (data) {     
+              if (data.status==401){
+                if(data.login=="1"){
+                  window.location = '/user/pemesanan';
+                }
+                else{
+                  window.location = '/login';
+                }
+              }
+             }
+       },
        columns: [
                { data: 'fasilitas_nama', name: 'fasilitas_nama', class:'text-center' },
                { data: 'fasilitas_icon', name: 'fasilitas_icon' },

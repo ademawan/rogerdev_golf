@@ -286,6 +286,8 @@
 
 $(document).ready( function () {
 
+
+    var token=localStorage.getItem("accessToken")
     
     var table = $('#myTable').DataTable( {
        
@@ -295,7 +297,21 @@ $(document).ready( function () {
        scrollX: true,
        scrollY: true,
      
-       ajax: "{{.path}}admin/user/datatables",
+       ajax: {
+            url: "{{.path}}admin/user/datatables",
+            type: "GET",
+            headers: { 'Authorization': 'Bearer '+token},
+             error:function (data) {     
+              if (data.status==401){
+                if(data.login=="1"){
+                  window.location = '/user/pemesanan';
+                }
+                else{
+                  window.location = '/login';
+                }             
+               }
+             }
+       },
        columns: [
                { data: 'user_nama', name: 'user_nama', class:'text-center' },
                { data: 'user_email', name: 'user_email' },

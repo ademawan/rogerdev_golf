@@ -1,4 +1,4 @@
-package pemesanan
+package pemesananuser
 
 import (
 	"net/http"
@@ -6,7 +6,7 @@ import (
 	"rogerdev_golf/delivery/controllers/common"
 	"rogerdev_golf/entities"
 	"rogerdev_golf/middlewares"
-	"rogerdev_golf/repository/pemesanan"
+	"rogerdev_golf/repository/pemesananuser"
 	"strconv"
 	"time"
 
@@ -16,31 +16,31 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type PemesananController struct {
-	repo pemesanan.Pemesanan
+type PemesananUserController struct {
+	repo pemesananuser.PemesananUser
 	// conn *session.Session
 }
 
-func New(repository pemesanan.Pemesanan /*, S3 *session.Session*/) *PemesananController {
-	return &PemesananController{
+func New(repository pemesananuser.PemesananUser /*, S3 *session.Session*/) *PemesananUserController {
+	return &PemesananUserController{
 		repo: repository,
 		// conn: S3,
 	}
 }
-func (uc *PemesananController) UI() echo.HandlerFunc {
+func (uc *PemesananUserController) UI() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		path := os.Getenv("BASE_URL")
 		var dataMap = make(map[string]interface{})
 		dataMap["path"] = path
 
-		return c.Render(http.StatusOK, "adminpemesanan.html", dataMap)
+		return c.Render(http.StatusOK, "pemesananuser.html", dataMap)
 
 	}
 }
-func (uc *PemesananController) Create() echo.HandlerFunc {
+func (uc *PemesananUserController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		req := entities.PemesananRequestCreateFormat{}
+		req := entities.PemesananUserRequestCreateFormat{}
 
 		c.Bind(&req)
 		err := c.Validate(&req)
@@ -68,7 +68,7 @@ func (uc *PemesananController) Create() echo.HandlerFunc {
 		// timeNow := time.Now().In(timeLocation).Unix()
 
 		pemesananId := "PID00" + strconv.Itoa(int(time.Now().Unix()))
-		err_repo := uc.repo.Create(&entities.Pemesanan{
+		err_repo := uc.repo.Create(&entities.PemesananUser{
 			PemesananId:     pemesananId,
 			PemesananNama:   req.PemesananNama,
 			PemesananDate:   req.PemesananDate,
@@ -87,7 +87,7 @@ func (uc *PemesananController) Create() echo.HandlerFunc {
 	}
 }
 
-func (uc *PemesananController) Get() echo.HandlerFunc {
+func (uc *PemesananUserController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		pemesanaId := c.Param("pemesananid")
 
@@ -111,7 +111,7 @@ func (uc *PemesananController) Get() echo.HandlerFunc {
 	}
 }
 
-func (uc *PemesananController) GetAll() echo.HandlerFunc {
+func (uc *PemesananUserController) GetAll() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		res, err := uc.repo.GetAll()
@@ -134,12 +134,12 @@ func (uc *PemesananController) GetAll() echo.HandlerFunc {
 	}
 }
 
-func (uc *PemesananController) Update() echo.HandlerFunc {
+func (uc *PemesananUserController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		pemesanaId := c.Param("pemesananid")
-		var req = entities.PemesananRequestCreateFormat{}
+		var req = entities.PemesananUserRequestCreateFormat{}
 
-		err_repo := uc.repo.Update(&entities.Pemesanan{
+		err_repo := uc.repo.Update(&entities.PemesananUser{
 			PemesananId:     pemesanaId,
 			PemesananNama:   req.PemesananNama,
 			PemesananDate:   req.PemesananDate,
@@ -161,7 +161,7 @@ func (uc *PemesananController) Update() echo.HandlerFunc {
 	}
 }
 
-func (uc *PemesananController) Delete() echo.HandlerFunc {
+func (uc *PemesananUserController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		pemesanaId := c.Param("pemesananid")
 		_, err := uc.repo.Delete(pemesanaId)
@@ -174,17 +174,15 @@ func (uc *PemesananController) Delete() echo.HandlerFunc {
 	}
 }
 
-func (uc *PemesananController) GetAllDatatables() echo.HandlerFunc {
+func (uc *PemesananUserController) GetAllDatatables() echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		role := middlewares.ExtractRoles(c)
-		if role != "1" {
+		if role == "1" {
 			mapping := make(map[string]interface{})
 			mapping["message"] = "unauthorize"
-			if role == "2" || role == "1" {
-				mapping["login"] = "1"
-			}
-			mapping["login"] = "0"
+			mapping["login"] = "1"
+
 			return c.JSON(http.StatusUnauthorized, mapping)
 		}
 
@@ -222,7 +220,7 @@ func (uc *PemesananController) GetAllDatatables() echo.HandlerFunc {
 	}
 }
 
-// func (uc *PemesananController) Dummy() echo.HandlerFunc {
+// func (uc *PemesananUserController) Dummy() echo.HandlerFunc {
 // 	return func(c echo.Context) error {
 
 // 		q, _ := strconv.Atoi(c.QueryParam("length"))
@@ -235,7 +233,7 @@ func (uc *PemesananController) GetAllDatatables() echo.HandlerFunc {
 
 //		}
 //	}
-func (c *PemesananController) TimeToUser(timeInt int64) string {
+func (c *PemesananUserController) TimeToUser(timeInt int64) string {
 	if timeInt <= 0 {
 		return ""
 	}

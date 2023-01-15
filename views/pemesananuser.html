@@ -57,10 +57,10 @@
         
                 <li class="nav-item">
                       <li><a class="dropdown-item" href="/admin/user">User</a></li>
-                      <li><a class="dropdown-item " href="/admin/pemesanan">Pemesanan</a></li>
+                      <li><a class="dropdown-item active" href="/admin/pemesanan">Pemesanan</a></li>
                       <li><a class="dropdown-item " href="/admin/fasilitas">Fasilitas</a></li>
                       <li><a class="dropdown-item" href="/admin/profil-perusahaan">Profil Perusahaan</a></li>
-                      <li><a class="dropdown-item active" href="/admin/galeri">Galeri</a></li>
+                      <li><a class="dropdown-item" href="/admin/galeri">Galeri</a></li>
                   </li>
                  
                 <li><hr class="dropdown-divider"></li>
@@ -108,7 +108,7 @@
     <div class="row">
         
         <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center border-bottom">
-          <h1 class="h2 d-blockr">DAFTAR GALERI</h1>
+          <h1 class="h2 d-blockr">DAFTAR PEMESANAN</h1>
             <!-- -- <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group me-2">
                 <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -123,8 +123,8 @@
         
           <div class="row my-3">
             <div class="col-md-12">
-              <button type="button" id="tombolGaleri" class="btn linka d-inline mb-2" style="background-color: rgba(104, 91, 19, 0.782) " data-bs-toggle="collapse" data-bs-target="#tambahgaleri" aria-expanded="false" aria-controls="collapseExample">
-                Tambah Galeri
+              <button type="button" id="tombolPemesanan" class="btn linka d-inline mb-2" style="background-color: rgba(104, 91, 19, 0.782) " data-bs-toggle="collapse" data-bs-target="#tambahuser" aria-expanded="false" aria-controls="collapseExample">
+                Tambah Pemesanan
               </button>
               <div hidden>
                 <button type="button" id="tombolRefreshTable" class="btn linka d-inline mb-2" style="background-color: rgba(104, 91, 19, 0.782) " >
@@ -132,10 +132,10 @@
                 </button>
             </div>
               
-            <div class="col-md-12 collapse" id="tambahgaleri">
+            <div class="col-md-12 collapse" id="tambahuser">
               <div class="col-md">
-                <form class="form-horizontal form-disable-enter" name="formtambahgaleri" id="formtambahgaleri">
-                  <input type="hidden" id="galeri_id" name="galeri_id" class="form-control" value="">
+                <form class="form-horizontal form-disable-enter" name="formtambahpemesanan" id="formtambahpemesanan">
+                  <input type="hidden" id="pemesanan_id" name="pemesanan_id" class="form-control" value="">
       
                   <div class="row justify-content-around">
                
@@ -145,31 +145,83 @@
                         <div class="row py-2" style="margin:0 !important;">
                           <div class="col-md-12" >
                             <div class="mb-3 row">
-                              <label for="inputtext" class="col-sm-3 col-form-label">Galeri Nama</label>
+                              <label for="inputtext" class="col-sm-3 col-form-label">Pemesanan Nama</label>
                               <div class="col-sm-9">
-                                <input type="text" name="galeri_nama" class="form-control" id="galeri_nama">
-                                <span class="text-danger error-text galeri_nama_error"></span>
+                                <input type="text" name="pemesanan_nama" class="form-control" id="pemesanan_nama">
+                                <span class="text-danger error-text pemesanan_nama_error"></span>
       
                               </div>
                             </div>
                           </div>
 
+                        <div class="col-md-12">
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">Pemesanan Date</label>
+                              <div class="col-sm-9">  
+                                  <input type="date" name="pemesanan_date" class="form-control" id="pemesanan_date">
+                                   <span class="text-danger error-text pemesanan_date_error"></span>
+                              </div>
+                            </div>      
+                          </div>
                           <div class="col-md-12">
                             <div class="mb-3 row">
-                              <label for="inputtext" class="col-sm-3 col-form-label">Galeri Image</label>
+                              <label for="inputtext" class="col-sm-3 col-form-label">Pemesanan Time</label>
                               <div class="col-sm-9">  
-                                <input type="file" id="galeri_image" class="form-control" name="galeri_image">
-                                   <span class="text-danger error-text galeri_image_error"></span>
+                                  <input type="time" name="pemesanan_time" class="form-control" id="pemesanan_time">
+                                   <span class="text-danger error-text pemesanan_time_error"></span>
                               </div>
                             </div>      
                           </div>
 
+                          <div class="col-md-12">
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">Pemesanan Email</label>
+                              <div class="col-sm-9">  
+                                  <input type="email" name="pemesanan_email" class="form-control" id="pemesanan_email">
+                                   <span class="text-danger error-text pemesanan_email_error"></span>
+                              </div>
+                            </div>      
+                          </div>
+
+                          <div class="col-md-12">
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">Pemesanan No Hp</label>
+                              <div class="col-sm-9">  
+                                  <input type="text" name="pemesanan_no_hp" class="form-control" id="pemesanan_no_hp">
+                                   <span class="text-danger error-text pemesanan_no_hp_error"></span>
+                              </div>
+                            </div>      
+                          </div>
+
+                          <div class="col-md-12" >
+                              <div class="mb-3 row">
+                                <label for="inputtext" class="col-sm-3 col-form-label">Pemesanan Status </label>
+                                <div class="col-sm-3"  style="padding-left: 0 !important">
+                                  <select class="form-select bg-secondary text-light" id="pemesanan_status" name="pemesanan_status">
+                                    <option value="Selesai" selected>Selesai</option>
+                                    <option value="Diterima">Diterima</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                  </select>
+                                </div>  
+                              </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="mb-3 row">
+                                  <label for="inputtext" class="col-sm-3 col-form-label">Pemesanan Alamat</label>
+                                  <div class="col-sm-9">  
+                                      <input type="text" name="pemesanan_alamat" class="form-control" id="pemesanan_alamat">
+                                       <span class="text-danger error-text pemesanan_alamat_error"></span>
+                                  </div>
+                                </div>      
+                              </div>
+
       
                         </div>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-center telusuri">
-                              <button id="saveBtnUpdateGaleri" class="btn btn-primary me-md-2" type="submit">Tambah</button>
-                              <button id="saveBtnTambahGaleri" class="btn btn-primary me-md-2" type="submit">Tambah</button>
-                              <button id="saveBtnBatalGaleri" class="btn btn-danger" type="submit">Batal</button>
+                              <button id="saveBtnUpdatePemesanan" class="btn btn-primary me-md-2" type="submit">Tambah</button>
+                              <button id="saveBtnTambahPemesanan" class="btn btn-primary me-md-2" type="submit">Tambah</button>
+                              <button id="saveBtnBatalPemesanan" class="btn btn-danger" type="submit">Batal</button>
                           </div>
                
                       </div>
@@ -177,8 +229,14 @@
                     <div class="col-lg-6 shadow-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic maxime quidem modi repellat fugit velit explicabo nostrum sequi, blanditiis eum voluptas deserunt culpa nemo ut recusandae at nulla illo officiis dolores, cupiditate deleniti vel libero. Accusantium fugit officiis repellat eos sed, voluptatem facere reiciendis eaque inventore cupiditate repellendus veniam veritatis corrupti dignissimos voluptas. Eveniet obcaecati iste dignissimos autem.
                       <div class="row">
                         <small>
-                        <span class="text-danger error-text galeri_nama_errornotif"></span>
-                        <span class="text-danger error-text galeri_image_errornotif"></span>
+                        <span class="text-danger error-text pemesanan_nama_errornotif"></span>
+                        <span class="text-danger error-text pemesanan_date_errornotif"></span>
+                        <span class="text-danger error-text pemesanan_time_errornotif"></span>
+                        <span class="text-danger error-text pemesanan_email_errornotif"></span>
+                        <span class="text-danger error-text pemesanan_no_hp_errornotif"></span>
+                        <span class="text-danger error-text pemesanan_status_errornotif"></span>
+                        <span class="text-danger error-text pemesanan_alamat_errornotif"></span>
+
                         </small>
                       </div>
       
@@ -197,8 +255,14 @@
             <table id="myTable" class="table table-striped w-100">
               <thead>
                 <tr>
-                  <th scope="col">Galeri Nama</th>
-                  <th scope="col">Galeri Image</th>
+                  <th scope="col">Pemesanan Nama</th>
+                  <th scope="col">Pemesanan Date</th>
+                  <th scope="col">Pemesanan Time</th>
+                  <th scope="col">Pemesanan Email</th>
+                  <th scope="col">Pemesanan No Hp</th>
+                  <th scope="col">Pemesanan Status</th>
+                  <th scope="col">Pemesanan Alamat</th>
+                  <th scope="col">Dibuat Pada</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -237,9 +301,9 @@
 <script>
 
 $(document).ready( function () {
+
   var token=localStorage.getItem("accessToken")
 
-    
     var table = $('#myTable').DataTable( {
        
        processing: true,
@@ -249,13 +313,13 @@ $(document).ready( function () {
        scrollY: true,
      
        ajax: {
-            url: "{{.path}}admin/galeri/datatables",
+            url: "/admin/pemesanan/datatables",
             type: "GET",
             headers: { 'Authorization': 'Bearer '+token},
              error:function (data) {     
               if (data.status==401){
                 if(data.login=="1"){
-                  window.location = '/user/pemesanan';
+                  window.location = '/admin/user';
                 }
                 else{
                   window.location = '/login';
@@ -264,8 +328,14 @@ $(document).ready( function () {
              }
        },
        columns: [
-               { data: 'galeri_nama', name: 'galeri_nama', class:'text-center' },
-               { data: 'galeri_image', name: 'galeri_image' },
+               { data: 'pemesanan_nama', name: 'pemesanan_nama', class:'text-center' },
+               { data: 'pemesanan_date', name: 'pemesanan_date' },
+               { data: 'pemesanan_time', name: 'pemesanan_time' },
+               { data: 'pemesanan_email', name: 'pemesanan_email' },
+               { data: 'pemesanan_no_hp', name: 'pemesanan_no_hp' },
+               { data: 'pemesanan_status', name: 'pemesanan_status' },
+               { data: 'pemesanan_alamat', name: 'pemesanan_alamat' },
+               { data: 'created_at', name: 'created_at' },
                { data: 'action', name: 'action' },            
            ],
      });
@@ -293,21 +363,21 @@ $(document).ready( function () {
 
           });
      
-     $('#tombolGaleri').click(function(){
-       $('#saveBtnTambahGaleri').addClass('show');
-       $('#saveBtnUpdateGaleri').attr('hidden', 'true'); 
-       $('#saveBtnTambahGaleri').removeAttr('hidden'); 
+     $('#tombolPemesanan').click(function(){
+       $('#saveBtnTambahPemesanan').addClass('show');
+       $('#saveBtnUpdatePemesanan').attr('hidden', 'true'); 
+       $('#saveBtnTambahPemesanan').removeAttr('hidden'); 
      });
  
      // Tambah user
-     $('#saveBtnTambahGaleri').click( function(e){
+     $('#saveBtnTambahPemesanan').click( function(e){
  
        e.preventDefault();
        $(this).html('Sending..');
    
        $.ajax({
-         data: $('#formtambahgaleri').serialize(),
-         url: "/admin/galeri/ajax",
+         data: $('#formtambahpemesanan').serialize(),
+         url: "/admin/pemesanan/ajax",
          type: "POST",
          dataType: 'json',
          beforeSend:function(){
@@ -320,13 +390,13 @@ $(document).ready( function () {
                    $.each(data.error, function(frefix, val){
                      $('span.'+frefix+'_error').text(val[0]);
                      $('span.'+frefix+'_errornotif').text('['+val[0]+']');
-                     $('#saveBtnTambahGaleri').html('Tambah');
+                     $('#saveBtnTambahPemesanan').html('Tambah');
                    });
                  }else{
-                   $('#formtambahgaleri').trigger("reset");
+                   $('#formtambahpemesanan').trigger("reset");
                    table.draw();
-                   $('#saveBtnTambahGaleri').html('Tambah');
-                   $('#tombolGaleri').trigger('click');
+                   $('#saveBtnTambahPemesanan').html('Tambah');
+                   $('#tombolPemesanan').trigger('click');
                    $('.table-responsive').before(`<div class="alert alert-warning alert-dismissible fade show" role="alert"> Sukses tambah data !!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`);
                    $('.alert').delay(2000).fadeOut(function() {
                      $(this).remove(); 
@@ -342,21 +412,28 @@ $(document).ready( function () {
  
      //edit
      $('body').on('click', '.editUser', function () {
-       $('#saveBtnTambahGaleri').attr('hidden', 'true'); 
-       $('#saveBtnUpdateGaleri').removeAttr('hidden'); 
-       $('#saveBtnUpdateGaleri').html('Update');
+       $('#saveBtnTambahPemesanan').attr('hidden', 'true'); 
+       $('#saveBtnUpdatePemesanan').removeAttr('hidden'); 
+       $('#saveBtnUpdatePemesanan').html('Update');
  
  
  
  
-       var galeri_id = $(this).data('id');
-       $.get("/admin/galeri/ajax" +'/' + galeri_id +'/edit', function (data) {
-         $('#tambahgaleri').addClass('show');
+       var pemesanan_id = $(this).data('id');
+       $.get("/admin/pemesanan/ajax" +'/' + pemesanan_id +'/edit', function (data) {
+         $('#tambahuser').addClass('show');
+         var dataNew = data.data
  
-           $('#galeri_id').val(data.galeri_id);
-           $('#galeri_nama').val(data.galeri_nama);
-           $('#galeri_image').val(data.galeri_image);
+           $('#pemesanan_id').val(dataNew.pemesanan_id);
+           $('#pemesanan_nama').val(dataNew.pemesanan_nama);
+           $('#pemesanan_date').val(dataNew.pemesanan_date);
+           $('#pemesanan_time').val(dataNew.pemesanan_time);
+           $('#pemesanan_email').val(dataNew.pemesanan_email);
+           $('#pemesanan_no_hp').val(dataNew.pemesanan_no_hp);
+           $('#pemesanan_status').val(dataNew.pemesanan_status);
+           $('#pemesanan_alamat').val(dataNew.pemesanan_alamat);
 
+ 
            $("html, body").animate({ scrollTop: 0 }, "slow");
            // $('#scroll-ku').scrollTop = 0;
            
@@ -365,14 +442,14 @@ $(document).ready( function () {
  
  
      //update
-    $('#saveBtnUpdateGaleri').click(function (e) {
+    $('#saveBtnUpdatePemesanan').click(function (e) {
  
        e.preventDefault();
        $(this).html('Sending..');
-       var galeri_id = $('#galeri_id').val();
+       var pemesanan_id = $('#pemesanan_id').val();
        $.ajax({
-         data: $('#formtambahgaleri').serialize(),
-         url: "/admin/galeri/ajax"+'/'+galeri_id,
+         data: $('#formtambahpemesanan').serialize(),
+         url: "/admin/pemesanan/ajax"+'/'+pemesanan_id,
          type: "PUT",
          dataType: 'json',
          beforeSend:function(){
@@ -385,14 +462,14 @@ $(document).ready( function () {
                    $.each(data.error, function(frefix, val){
                      $('span.'+frefix+'_error').text(val[0]);
                      $('span.'+frefix+'_errornotif').text('['+val[0]+']');
-                     $('#updateBtnUpdateGaleri').html('Update');
+                     $('#updateBtnUpdatePemesanan').html('Update');
                    });
                  }else{
                    $(this).html('Update');
-                   $('#formtambahgaleri').trigger("reset");
+                   $('#formtambahpemesanan').trigger("reset");
                    table.draw();
-                   $('#saveBtnTambahGaleri').html('Tambah');
-                   $('#tombolGaleri').trigger('click');   
+                   $('#saveBtnTambahPemesanan').html('Tambah');
+                   $('#tombolPemesanan').trigger('click');   
                    $('.table-responsive').before(`<div class="alert alert-warning alert-dismissible fade show" role="alert"> Sukses Update data!!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`);
                    $('.alert').delay(2000).fadeOut(function() {
                       $(this).remove(); 
@@ -407,12 +484,12 @@ $(document).ready( function () {
  
  
      //batal
-    $('#saveBtnBatalGaleri').click( function(e){
+    $('#saveBtnBatalPemesanan').click( function(e){
        $(this).html('Sending..');
        e.preventDefault();
-       $('#formtambahgaleri').trigger("reset");
-          $('#saveBtnBatalGaleri').html('Batal');
-          $('#tombolGaleri').trigger('click');
+       $('#formtambahpemesanan').trigger("reset");
+          $('#saveBtnBatalPemesanan').html('Batal');
+          $('#tombolPemesanan').trigger('click');
           $(document).find('span.error-text').text('');
   
      })
@@ -422,12 +499,12 @@ $(document).ready( function () {
      //delete
      $('body').on('click', '.deleteUser', function () {
       
-       var galeri_id = $(this).data("id");
+       var pemesanan_id = $(this).data("id");
        var r = confirm("Are You sure want to delete !");
         if (r == true) {
           $.ajax({
            type: "DELETE",
-           url: "/admin/galeri/ajax"+'/'+galeri_id,
+           url: "/admin/pemesanan/ajax"+'/'+pemesanan_id,
            success: function (data) {
              $('.table-responsive').before(`<div class="alert alert-danger alert-dismissible fade show" role="alert"> Sukses hapus data!!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`);
              table.draw();

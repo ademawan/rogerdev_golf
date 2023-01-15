@@ -82,7 +82,6 @@
                         $(document).find('span.error-text').text('');
                     },
                     success: function (data) {
-                        console.log(data);
 
                         if (data.status == 0) {
                             $.each(data.error, function (frefix, val) {
@@ -97,8 +96,9 @@
                                 $(this).remove();
                             });
 
-
-                                window.location = '/admin/user';
+                            localStorage.setItem("accessToken",data.data.token);
+                            // var dataas=localStorage.getItem("accessToken")
+                            window.location = '/admin/user';
                          
                         }
                     

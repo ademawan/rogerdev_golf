@@ -1,10 +1,12 @@
 package galeri
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"rogerdev_golf/delivery/controllers/common"
 	"rogerdev_golf/entities"
+	"rogerdev_golf/middlewares"
 	"rogerdev_golf/repository/galeri"
 	"strconv"
 	"time"
@@ -66,7 +68,7 @@ func (uc *GaleriController) Create() echo.HandlerFunc {
 		// timeLocation, _ := time.LoadLocation("Asia/Jakarta")
 		// timeNow := time.Now().In(timeLocation).Unix()
 
-		galeriId := "FID00" + strconv.Itoa(int(time.Now().Unix()))
+		galeriId := "GID00" + strconv.Itoa(int(time.Now().Unix()))
 		err_repo := uc.repo.Create(&entities.Galeri{
 			GaleriId:    galeriId,
 			GaleriNama:  req.GaleriNama,
@@ -83,9 +85,9 @@ func (uc *GaleriController) Create() echo.HandlerFunc {
 
 func (uc *GaleriController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userId := c.Request().Header.Get("fasilitas.html")
+		galeriId := c.Param("galeriid")
 
-		res, err := uc.repo.Get(userId)
+		res, err := uc.repo.Get(galeriId)
 
 		if err != nil {
 			statusCode := http.StatusInternalServerError
@@ -130,7 +132,7 @@ func (uc *GaleriController) GetAll() echo.HandlerFunc {
 
 func (uc *GaleriController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		galeriId := c.Request().Header.Get("fasilitas_id")
+		galeriId := c.Param("galeriid")
 		var req = entities.GaleriRequestUpdateFormat{}
 
 		err_repo := uc.repo.Update(&entities.Galeri{
@@ -152,8 +154,8 @@ func (uc *GaleriController) Update() echo.HandlerFunc {
 
 func (uc *GaleriController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userId := c.Request().Header.Get("fasilitas_id")
-		_, err := uc.repo.Delete(userId)
+		galeriId := c.Param("galeriid")
+		_, err := uc.repo.Delete(galeriId)
 
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.ResponseUser(http.StatusInternalServerError, "There is some error on server", nil))
@@ -165,46 +167,46 @@ func (uc *GaleriController) Delete() echo.HandlerFunc {
 
 func (uc *GaleriController) GetAllDatatables() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		// userUid := middlewares.ExtractTokenUserUid(c)
+		role := middlewares.ExtractRoles(c)
+		if role != "1" {
+			mapping := make(map[string]interface{})
+			mapping["message"] = "unauthorize"
+			if role == "2" || role == "1" {
+				mapping["login"] = "1"
+			}
+			mapping["login"] = "0"
 
-		// res, err := uc.repo.GetByUid(userUid)
-
-		// if err != nil {
-		// 	statusCode := http.StatusInternalServerError
-		// 	errorMessage := "There is some problem from the server"
-		// 	if err.Error() == "record not found" {
-		// 		statusCode = http.StatusNotFound
-		// 		errorMessage = err.Error()
-		// 	}
-		// 	return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, nil))
-		// }
-
-		// res.CreatedAt = uc.TimeToUser(res.CreatedAt.(int64))
-		// res.UpdatedAt = uc.TimeToUser(res.UpdatedAt.(int64))
-		// res.DeletedAt = uc.TimeToUser(res.DeletedAt.(int64))
+			return c.JSON(http.StatusUnauthorized, mapping)
+		}
 
 		output := make(map[string]interface{})
 		output["draw"] = 1
+		output["start"] = 0
 		output["recordsTotal"] = 0
 		output["recordsFiltered"] = 0
 		data := make([]interface{}, 0)
 		output["data"] = data
 		output["error"] = ""
 
-		res := make(map[string]interface{})
-		res["user_nama"] = "test"
-		res["user_email"] = 50
-		res["user_alamat"] = "honda"
-		res["user_no_hp"] = "081221997456"
-		res["user_tipe"] = "Member"
-		res["action"] = `<button type="submit"></button>`
-		data = append(data, res)
-		output["start"] = 1
-		output["draw"] = 1
-		output["recordsTotal"] = 2
-		output["recordsFiltered"] = 2
+		res, count, err := uc.repo.GetAllDatatables()
+		if err != nil {
+			statusCode := http.StatusInternalServerError
+			errorMessage := "There is some problem from the server"
+			if err.Error() == "record not found" {
+				statusCode = http.StatusNotFound
+				errorMessage = err.Error()
+			}
+			return c.JSON(statusCode, common.ResponseUser(http.StatusNotFound, errorMessage, output))
 
-		output["data"] = data
+		}
+		fmt.Println(res)
+		if len(res) != 0 {
+			output["start"] = 1
+			output["draw"] = 20
+			output["data"] = res
+			output["recordsTotal"] = count
+			output["recordsFiltered"] = 20
+		}
 
 		return c.JSON(http.StatusOK, output)
 	}

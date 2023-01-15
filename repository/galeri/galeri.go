@@ -90,6 +90,43 @@ func (r *GaleriRepository) GetAll() ([]domain.GaleriResponseFormat, error) {
 
 	return galerii, nil
 }
+func (r *GaleriRepository) GetAllDatatables() ([]domain.GaleriResponseFormatDatatables, int, error) {
+	galerii := []domain.GaleriResponseFormatDatatables{}
+
+	res, err := r.GetCount()
+	if err != nil {
+		return galerii, 0, errors.New("Internal Server Eroor")
+	}
+	if res == 0 {
+		return galerii, 0, errors.New("user is empty")
+	}
+	query := `SELECT galeri_id,
+	galeri_nama,
+	galeri_image from
+	 galeri `
+	rows1, err := r.db.Query(query)
+	if err != nil {
+		return galerii, 0, errors.New("failed get")
+	}
+
+	defer rows1.Close()
+	for rows1.Next() {
+		galeri := domain.GaleriResponseFormatDatatables{}
+		err := rows1.Scan(&galeri.GaleriId, &galeri.GaleriNama, &galeri.GaleriImage)
+
+		if err != nil {
+
+			return galerii, 0, errors.New("failed get")
+		}
+
+		galeri.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + galeri.GaleriId + `" data-original-title="Edit" class="edit btn btn-primary btn-sm editUser">Edit</a>`
+
+		galeri.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + galeri.GaleriId + `" data-original-title="Delete" class="btn btn-danger btn-sm deleteUser">Delete</a>`
+		galerii = append(galerii, galeri)
+	}
+
+	return galerii, res, nil
+}
 
 func (r *GaleriRepository) Update(galeri *domain.Galeri) error {
 
@@ -174,4 +211,25 @@ func (r *GaleriRepository) CheckName(fasilitasName string) (string, bool, error)
 	}
 	return galeriId, true, nil
 
+}
+
+// Get Count
+func (r *GaleriRepository) GetCount() (int, error) {
+
+	var count int
+
+	// cipher := os.Getenv("CHIPER_MYSQL")
+
+	query := "SELECT count(galeri_id) FROM galeri "
+
+	err := r.db.QueryRow(query).Scan(&count)
+
+	if err != nil {
+		return 0, errors.New("internal server error")
+	}
+	if count == 0 {
+		return 0, errors.New("user is not found")
+
+	}
+	return count, nil
 }

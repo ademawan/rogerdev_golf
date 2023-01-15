@@ -6,6 +6,7 @@ import (
 	"os"
 	"rogerdev_golf/delivery/controllers/common"
 	"rogerdev_golf/entities"
+	"rogerdev_golf/middlewares"
 	"rogerdev_golf/repository/fasilitas"
 	"strconv"
 	"time"
@@ -170,6 +171,19 @@ func (uc *FasilitasController) Delete() echo.HandlerFunc {
 
 func (uc *FasilitasController) GetAllDatatables() echo.HandlerFunc {
 	return func(c echo.Context) error {
+
+		role := middlewares.ExtractRoles(c)
+		if role != "1" {
+			mapping := make(map[string]interface{})
+			mapping["message"] = "unauthorize"
+			if role == "2" || role == "1" {
+				mapping["login"] = "1"
+			}
+			mapping["login"] = "0"
+
+			return c.JSON(http.StatusUnauthorized, mapping)
+		}
+
 		output := make(map[string]interface{})
 		output["draw"] = 1
 		output["start"] = 0

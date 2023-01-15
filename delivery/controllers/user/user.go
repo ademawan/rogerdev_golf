@@ -6,6 +6,7 @@ import (
 	"os"
 	"rogerdev_golf/delivery/controllers/common"
 	"rogerdev_golf/entities"
+	"rogerdev_golf/middlewares"
 	"rogerdev_golf/repository/user"
 	"strconv"
 	"time"
@@ -209,6 +210,15 @@ func (uc *UserController) Delete() echo.HandlerFunc {
 func (uc *UserController) GetAllDatatables() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// userUid := middlewares.ExtractTokenUserUid(c)
+		// var dataas=localStorage.getItem("accessToken")
+
+		role := middlewares.ExtractRoles(c)
+		if role != "1" {
+			mapping := make(map[string]interface{})
+			mapping["message"] = "unauthorize"
+
+			return c.JSON(http.StatusUnauthorized, mapping)
+		}
 
 		output := make(map[string]interface{})
 		output["draw"] = 1
@@ -216,10 +226,9 @@ func (uc *UserController) GetAllDatatables() echo.HandlerFunc {
 		output["recordsFiltered"] = 0
 		data := make([]interface{}, 0)
 		output["data"] = data
-		output["error"] = ""
+		output[""] = ""
 
 		res, count, err := uc.repo.GetAllDatatables()
-		fmt.Println(res)
 		if err != nil {
 			statusCode := http.StatusInternalServerError
 			errorMessage := "There is some problem from the server"

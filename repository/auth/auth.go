@@ -25,6 +25,7 @@ func (ad *AuthDb) Login(email, password string) (entities.User, error) {
 	query := `SELECT * from user Where user_email=?`
 	err := ad.db.QueryRow(query, email).Scan(&user.UserId, &user.UserNama, &user.UserEmail, &user.UserPassword, &user.UserAlamat, &user.UserNoHp, &user.UserTipeId, &user.IsUser, &user.CreatedAt)
 	if err != nil {
+		fmt.Println(err.Error())
 		return user, errors.New("Internal Server Error")
 	}
 	match := middlewares.CheckPasswordHash(password, user.UserPassword)

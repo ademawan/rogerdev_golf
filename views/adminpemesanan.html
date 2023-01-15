@@ -302,7 +302,8 @@
 
 $(document).ready( function () {
 
-    
+  var token=localStorage.getItem("accessToken")
+
     var table = $('#myTable').DataTable( {
        
        processing: true,
@@ -311,7 +312,21 @@ $(document).ready( function () {
        scrollX: true,
        scrollY: true,
      
-       ajax: "/admin/pemesanan/datatables",
+       ajax: {
+            url: "/admin/pemesanan/datatables",
+            type: "GET",
+            headers: { 'Authorization': 'Bearer '+token},
+             error:function (data) {     
+              if (data.status==401){
+                if(data.login=="1"){
+                  window.location = '/user/pemesanan';
+                }
+                else{
+                  window.location = '/login';
+                }
+              }
+             }
+       },
        columns: [
                { data: 'pemesanan_nama', name: 'pemesanan_nama', class:'text-center' },
                { data: 'pemesanan_date', name: 'pemesanan_date' },

@@ -6,6 +6,8 @@ import (
 	"rogerdev_golf/delivery/controllers/fasilitas"
 	"rogerdev_golf/delivery/controllers/galeri"
 	"rogerdev_golf/delivery/controllers/pemesanan"
+	"rogerdev_golf/delivery/controllers/pemesananuser"
+
 	"rogerdev_golf/delivery/controllers/user"
 
 	"rogerdev_golf/middlewares"
@@ -20,6 +22,7 @@ func RegisterPath(e *echo.Echo,
 	pc *pemesanan.PemesananController,
 	gc *galeri.GaleriController,
 	fc *fasilitas.FasilitasController,
+	puc *pemesananuser.PemesananUserController,
 
 ) {
 
@@ -59,7 +62,7 @@ func RegisterPath(e *echo.Echo,
 	e.DELETE("/users/me", uc.Delete(), middlewares.JwtMiddleware())
 
 	e.GET("/admin/user", uc.UI())
-	e.GET("/admin/user/datatables", uc.GetAllDatatables())
+	e.GET("/admin/user/datatables", uc.GetAllDatatables(), middlewares.JwtMiddleware())
 	e.POST("/admin/user/ajax", uc.Register())
 	e.GET("/admin/user/ajax", uc.GetAll())
 	e.GET("/admin/user/ajax/:userid/edit", uc.GetByUid())
@@ -68,16 +71,25 @@ func RegisterPath(e *echo.Echo,
 
 	//ROUTE PEMESANAN
 	e.GET("/admin/pemesanan", pc.UI())
-	e.GET("/admin/pemesanan/datatables", pc.GetAllDatatables())
+	e.GET("/admin/pemesanan/datatables", pc.GetAllDatatables(), middlewares.JwtMiddleware())
 	e.POST("/admin/pemesanan/ajax", pc.Create())
 	e.GET("/admin/pemesanan/ajax", pc.GetAll())
 	e.GET("/admin/pemesanan/ajax/:pemesananid/edit", pc.Get())
 	e.PUT("/admin/pemesanan/ajax/:pemesananid", pc.Update())
 	e.DELETE("/admin/pemesanan/ajax/:pemesananid", pc.Delete())
 
+	//ROUTE PEMESANAN USER
+	e.GET("/user/pemesanan", puc.UI())
+	e.GET("/user/pemesanan/datatables", puc.GetAllDatatables(), middlewares.JwtMiddleware())
+	e.POST("/user/pemesanan/ajax", puc.Create())
+	e.GET("/user/pemesanan/ajax", puc.GetAll())
+	e.GET("/user/pemesanan/ajax/:pemesananid/edit", puc.Get())
+	e.PUT("/user/pemesanan/ajax/:pemesananid", puc.Update())
+	e.DELETE("/user/pemesanan/ajax/:pemesananid", puc.Delete())
+
 	//ROUTE FASILITAS
 	e.GET("/admin/fasilitas", fc.UI())
-	e.GET("/admin/fasilitas/datatables", fc.GetAllDatatables())
+	e.GET("/admin/fasilitas/datatables", fc.GetAllDatatables(), middlewares.JwtMiddleware())
 	e.POST("/admin/fasilitas/ajax", fc.Create())
 	e.GET("/admin/fasilitas/ajax", fc.GetAll())
 	e.GET("/admin/fasilitas/ajax/:fasilitasid/edit", pc.Get())
@@ -86,7 +98,7 @@ func RegisterPath(e *echo.Echo,
 
 	//ROUTE GALERI
 	e.GET("/admin/galeri", gc.UI())
-	e.GET("/admin/galeri/datatables", gc.GetAllDatatables())
+	e.GET("/admin/galeri/datatables", gc.GetAllDatatables(), middlewares.JwtMiddleware())
 	e.POST("/admin/galeri/ajax", gc.Create())
 	e.GET("/admin/galeri/ajax", gc.GetAll())
 	e.GET("/admin/galeri/ajax/:galeriid/edit", pc.Get())
@@ -95,7 +107,7 @@ func RegisterPath(e *echo.Echo,
 
 	//ROUTE PROFIL PERUSAHAAN
 	e.GET("/admin/profile-perusahaan", pc.UI())
-	e.GET("/admin/profile-perusahaan/datatables", pc.GetAllDatatables())
+	e.GET("/admin/profile-perusahaan/datatables", pc.GetAllDatatables(), middlewares.JwtMiddleware())
 	e.POST("/admin/profile-perusahaan/ajax", pc.Create())
 	e.GET("/admin/profile-perusahaan/ajax", pc.GetAll())
 	e.GET("/admin/profile-perusahaan/ajax/:profileperusahaanid/edit", pc.Get())

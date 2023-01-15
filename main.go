@@ -8,12 +8,16 @@ import (
 	fc "rogerdev_golf/delivery/controllers/fasilitas"
 	gc "rogerdev_golf/delivery/controllers/galeri"
 	pc "rogerdev_golf/delivery/controllers/pemesanan"
+	puc "rogerdev_golf/delivery/controllers/pemesananuser"
+
 	uc "rogerdev_golf/delivery/controllers/user"
 	"rogerdev_golf/delivery/routes"
 	authRepo "rogerdev_golf/repository/auth"
 	fasilitasRepo "rogerdev_golf/repository/fasilitas"
 	galeriRepo "rogerdev_golf/repository/galeri"
 	pemesananRepo "rogerdev_golf/repository/pemesanan"
+	pemesananuserRepo "rogerdev_golf/repository/pemesananuser"
+
 	userRepo "rogerdev_golf/repository/user"
 	"rogerdev_golf/utils"
 	"text/template"
@@ -49,12 +53,16 @@ func main() {
 	authRepo := authRepo.New(db)
 	userRepo := userRepo.NewUserRepository(db)
 	pemesananRepo := pemesananRepo.NewPemesananRepository(db)
+	pemesananuserRepo := pemesananuserRepo.NewPemesananUserRepository(db)
+
 	galeriRepo := galeriRepo.NewGaleriRepository(db)
 	fasilitasRepo := fasilitasRepo.NewFasilitasRepository(db)
 
 	authController := ac.New(authRepo)
 	userController := uc.New(userRepo)
 	pemesananController := pc.New(pemesananRepo)
+	pemesananuserController := puc.New(pemesananuserRepo)
+
 	galeriController := gc.New(galeriRepo)
 	fasilitasController := fc.New(fasilitasRepo)
 
@@ -63,7 +71,7 @@ func main() {
 	e.Renderer = NewRenderer("./views/*.html", true)
 	e.Validator = &CustomValidator{validator: validator.New()}
 
-	routes.RegisterPath(e, authController, userController, pemesananController, galeriController, fasilitasController)
+	routes.RegisterPath(e, authController, userController, pemesananController, galeriController, fasilitasController, pemesananuserController)
 
 	log.Fatal(e.Start(fmt.Sprintf(":%d", config.Port)))
 }
