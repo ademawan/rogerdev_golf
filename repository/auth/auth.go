@@ -23,7 +23,7 @@ func (ad *AuthDb) Login(email, password string) (entities.User, error) {
 	user := entities.User{}
 	fmt.Println(email, password)
 	query := `SELECT * from user Where user_email=?`
-	err := ad.db.QueryRow(query, email).Scan(&user.UserId, &user.UserNama, &user.UserNama, &user.UserEmail, &user.UserAlamat, &user.UserNoHp, &user.UserTipeId, &user.IsUser, &user.CreatedAt)
+	err := ad.db.QueryRow(query, email).Scan(&user.UserId, &user.UserNama, &user.UserEmail, &user.UserPassword, &user.UserAlamat, &user.UserNoHp, &user.UserTipeId, &user.IsUser, &user.CreatedAt)
 	if err != nil {
 		return user, errors.New("Internal Server Error")
 	}

@@ -1,8 +1,8 @@
 package auth
 
 type LoginReqFormat struct {
-	Email    string `json:"email" form:"email" validate:"required,email"`
-	Password string `json:"password" form:"password" validate:"required"`
+	Email    string `json:"user_email" form:"user_email" validate:"required,email"`
+	Password string `json:"user_password" form:"user_password" validate:"required"`
 }
 
 type LoginRespFormat struct {

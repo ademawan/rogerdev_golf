@@ -19,7 +19,7 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 func (r *UserRepository) Create(user domain.User) error {
-	_, res, err := r.CheckEmail(user.UserNama)
+	_, res, err := r.CheckEmail(user.UserEmail)
 	if err != nil {
 		return err
 	} else if res {
