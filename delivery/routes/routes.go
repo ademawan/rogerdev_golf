@@ -7,6 +7,7 @@ import (
 	"rogerdev_golf/delivery/controllers/galeri"
 	"rogerdev_golf/delivery/controllers/pemesanan"
 	"rogerdev_golf/delivery/controllers/pemesananuser"
+	"rogerdev_golf/delivery/controllers/profilperusahaan"
 
 	"rogerdev_golf/delivery/controllers/user"
 
@@ -23,6 +24,7 @@ func RegisterPath(e *echo.Echo,
 	gc *galeri.GaleriController,
 	fc *fasilitas.FasilitasController,
 	puc *pemesananuser.PemesananUserController,
+	pruc *profilperusahaan.ProfilPerusahaanController,
 
 ) {
 
@@ -111,13 +113,16 @@ func RegisterPath(e *echo.Echo,
 	e.DELETE("/admin/galeri/ajax/:galeriid", gc.Delete())
 
 	//ROUTE PROFIL PERUSAHAAN
-	e.GET("/admin/profile-perusahaan", pc.UI())
-	e.GET("/admin/profile-perusahaan/datatables", pc.GetAllDatatables(), middlewares.JwtMiddleware())
-	e.POST("/admin/profile-perusahaan/ajax", pc.Create())
-	e.GET("/admin/profile-perusahaan/ajax", pc.GetAll())
-	e.GET("/admin/profile-perusahaan/ajax/:profileperusahaanid/edit", pc.Get())
-	e.PUT("/admin/profile-perusahaan/ajax/:profileperusahaanid", pc.GetAllDatatables())
-	e.DELETE("/admin/profile-perusahaan/ajax/:profileperusahaanid", pc.GetAllDatatables())
+	e.GET("/admin/profilperusahaan", pruc.UI())
+	e.GET("/admin/profilperusahaan/datatables", pruc.GetAllDatatables(), middlewares.JwtMiddleware())
+	e.POST("/admin/profilperusahaan/ajax", pruc.Create())
+	e.GET("/admin/profilperusahaan/ajax", pruc.GetAll())
+	e.GET("/admin/profilperusahaan/ajax/get", pruc.GetProfilPerusahaan())
+	e.GET("/admin/profilperusahaan/ajax/:profilperusahaanid/edit", pruc.Get())
+	e.PUT("/admin/profilperusahaan/ajax/:profilperusahaanid", pruc.GetAllDatatables())
+	e.DELETE("/admin/profilperusahaan/ajax/:profilperusahaanid", pruc.GetAllDatatables())
+
+	e.POST("/admin/profilperusahaan", pruc.CreateImage())
 
 	// e.GET("/users/me/search", pc.Search())
 	// e.GET("/users/me/dummy", pc.Dummy())

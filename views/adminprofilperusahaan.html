@@ -48,7 +48,7 @@
             <div class="position-sticky pt-3">
               <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">
+                    <a class="nav-link" href="/admin/user">
                       <span data-feather="home"></span>BERANDA
                     </a>
                   </li>
@@ -56,10 +56,10 @@
                   <li><hr class="dropdown-divider"></li>
         
                 <li class="nav-item">
-                      <li><a class="dropdown-item" href="/admin/user">User</a></li>
+                      <li><a class="dropdown-item " href="/admin/user">User</a></li>
                       <li><a class="dropdown-item " href="/admin/pemesanan">Pemesanan</a></li>
-                      <li><a class="dropdown-item active"  href="/admin/fasilitas">Fasilitas</a></li>
-                      <li><a class="dropdown-item" href="/admin/profilperusahaan">Profil Perusahaan</a></li>
+                      <li><a class="dropdown-item " href="/admin/fasilitas">Fasilitas</a></li>
+                      <li><a class="dropdown-item active" href="/admin/profilperusahaan">Profil Perusahaan</a></li>
                       <li><a class="dropdown-item" href="/admin/galeri">Galeri</a></li>
                   </li>
                  
@@ -108,7 +108,7 @@
     <div class="row">
         
         <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center border-bottom">
-          <h1 class="h2 d-blockr">DAFTAR FASILITAS</h1>
+          <h1 class="h2 d-blockr">DAFTAR PROFIL PERUSAHAAN</h1>
             <!-- -- <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group me-2">
                 <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -123,8 +123,8 @@
         
           <div class="row my-3">
             <div class="col-md-12">
-              <button type="button" id="tombolFasilitas" class="btn linka d-inline mb-2" style="background-color: rgba(104, 91, 19, 0.782) " data-bs-toggle="collapse" data-bs-target="#tambahfasilitas" aria-expanded="false" aria-controls="collapseExample">
-                Tambah Fasilitas
+              <button type="button" id="tombolProfilPerusahaan" class="btn linka d-inline mb-2" style="background-color: rgba(104, 91, 19, 0.782) " data-bs-toggle="collapse" data-bs-target="#tambahprofilperusahaan" aria-expanded="false" aria-controls="collapseExample">
+                Update Profil Perusahaan
               </button>
               <div hidden>
                 <button type="button" id="tombolRefreshTable" class="btn linka d-inline mb-2" style="background-color: rgba(104, 91, 19, 0.782) " >
@@ -132,10 +132,10 @@
                 </button>
             </div>
               
-            <div class="col-md-12 collapse" id="tambahfasilitas">
+            <div class="col-md-12 collapse" id="tambahprofilperusahaan">
               <div class="col-md">
-                <form class="form-horizontal form-disable-enter" name="formtambahfasilitas" id="formtambahfasilitas">
-                  <input type="hidden" id="fasilitas_id" name="fasilitas_id" class="form-control" value="">
+                <form class="form-horizontal form-disable-enter" name="formtambahprofilperusahaan" id="formtambahprofilperusahaan">
+                  <input type="hidden" id="profil_perusahaan_id" name="profil_perusahaan_id" class="form-control" value="">
       
                   <div class="row justify-content-around">
                
@@ -145,40 +145,60 @@
                         <div class="row py-2" style="margin:0 !important;">
                           <div class="col-md-12" >
                             <div class="mb-3 row">
-                              <label for="inputtext" class="col-sm-3 col-form-label">Fasilitas Nama</label>
+                              <label for="inputtext" class="col-sm-3 col-form-label">Profil Perusahaan Nama</label>
                               <div class="col-sm-9">
-                                <input type="text" name="fasilitas_nama" class="form-control" id="fasilitas_nama">
-                                <span class="text-danger error-text fasilitas_nama_error"></span>
+                                <input type="text" name="profil_perusahaan_nama" class="form-control" id="profil_perusahaan_nama">
+                                <span class="text-danger error-text profil_perusahaan_nama_error"></span>
       
                               </div>
                             </div>
                           </div>
-
-                        <div class="col-md-12">
-                            <div class="mb-3 row">
-                              <label for="inputtext" class="col-sm-3 col-form-label">Fasilitas Icon</label>
-                              <div class="col-sm-9">  
-                                <input type="file" id="fasilitas_icon" class="form-control" name="fasilitas_icon">
-                                   <span class="text-danger error-text fasilitas_icon_error"></span>
-                              </div>
-                            </div>      
-                          </div>
+                         
                           <div class="col-md-12">
                             <div class="mb-3 row">
-                              <label for="inputtext" class="col-sm-3 col-form-label">Fasilitas Image</label>
+                              <label for="inputtext" class="col-sm-3 col-form-label">Profil Perusahaan Email</label>
                               <div class="col-sm-9">  
-                                <input type="file" id="fasilitas_image" class="form-control" name="fasilitas_image">
-                                   <span class="text-danger error-text fasilitas_image_error"></span>
+                                  <input type="email" name="profil_perusahaan_email" class="form-control" id="profil_perusahaan_email">
+                                   <span class="text-danger error-text profil_perusahaan_email_error"></span>
                               </div>
                             </div>      
                           </div>
 
                           <div class="col-md-12">
                             <div class="mb-3 row">
-                              <label for="inputtext" class="col-sm-3 col-form-label">Fasilitas Body</label>
+                              <label for="inputtext" class="col-sm-3 col-form-label">Profil Perusahaan Alamat</label>
                               <div class="col-sm-9">  
-                                  <input type="text" name="fasilitas_body" class="form-control" id="fasilitas_body">
-                                   <span class="text-danger error-text fasilitas_body_error"></span>
+                                  <input type="text" name="profil_perusahaan_alamat" class="form-control" id="profil_perusahaan_alamat">
+                                   <span class="text-danger error-text profil_perusahaan_alamat_error"></span>
+                              </div>
+                            </div>      
+                          </div>
+                          <div class="col-md-12">
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">Profil Perusahaan No Hp</label>
+                              <div class="col-sm-9">  
+                                  <input type="text" name="profil_perusahaan_no_hp" class="form-control" id="profil_perusahaan_no_hp">
+                                   <span class="text-danger error-text profil_perusahaan_no_hp_error"></span>
+                              </div>
+                            </div>      
+                          </div>
+
+                          <div class="col-md-12">
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">Profil Perusahaan Deskripsi</label>
+                              <div class="col-sm-9">  
+                                  <input type="text" name="profil_perusahaan_deskripsi" class="form-control" id="profil_perusahaan_deskripsi">
+                                   <span class="text-danger error-text profil_perusahaan_deskripsi_error"></span>
+                              </div>
+                            </div>      
+                          </div>
+
+                          <div class="col-md-12">
+                            <div class="mb-3 row">
+                              <label for="inputtext" class="col-sm-3 col-form-label">Profil Perusahaan Image</label>
+                              <div class="col-sm-9">  
+                                  <input type="file" name="profil_perusahaan_image" class="form-control" id="profil_perusahaan_image">
+                                   <span class="text-danger error-text profil_perusahaan_image_error"></span>
                               </div>
                             </div>      
                           </div>
@@ -186,9 +206,9 @@
       
                         </div>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-center telusuri">
-                              <button id="saveBtnUpdateFasilitas" class="btn btn-primary me-md-2" type="submit">Tambah</button>
-                              <button id="saveBtnTambahFasilitas" class="btn btn-primary me-md-2" type="submit">Tambah</button>
-                              <button id="saveBtnBatalFasilitas" class="btn btn-danger" type="submit">Batal</button>
+                              <button id="saveBtnUpdateProfilPerusahaan" class="btn btn-primary me-md-2" type="submit">Tambah</button>
+                              <button id="saveBtnTambahProfilPerusahaan" class="btn btn-primary me-md-2" type="submit">Tambah</button>
+                              <button id="saveBtnBatalProfilPerusahaan" class="btn btn-danger" type="submit">Batal</button>
                           </div>
                
                       </div>
@@ -196,10 +216,12 @@
                     <div class="col-lg-6 shadow-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic maxime quidem modi repellat fugit velit explicabo nostrum sequi, blanditiis eum voluptas deserunt culpa nemo ut recusandae at nulla illo officiis dolores, cupiditate deleniti vel libero. Accusantium fugit officiis repellat eos sed, voluptatem facere reiciendis eaque inventore cupiditate repellendus veniam veritatis corrupti dignissimos voluptas. Eveniet obcaecati iste dignissimos autem.
                       <div class="row">
                         <small>
-                        <span class="text-danger error-text fasilitas_nama_errornotif"></span>
-                        <span class="text-danger error-text fasilitas_icon_errornotif"></span>
-                        <span class="text-danger error-text fasilitas_image_errornotif"></span>
-                        <span class="text-danger error-text fasilitas_body_errornotif"></span>
+                        <span class="text-danger error-text profil_perusahaan_nama_errornotif"></span>
+                        <span class="text-danger error-text profil_perusahaan_email_errornotif"></span>
+                        <span class="text-danger error-text profil_perusahaan_alamat_errornotif"></span>
+                        <span class="text-danger error-text profil_perusahaan_no_hp_errornotif"></span>
+                        <span class="text-danger error-text profil_perusahaan_deskripsi_errornotif"></span>
+                        <span class="text-danger error-text profil_perusahaan_image_errornotif"></span>
 
                         </small>
                       </div>
@@ -219,10 +241,12 @@
             <table id="myTable" class="table table-striped w-100">
               <thead>
                 <tr>
-                  <th scope="col">Fasilitas Nama</th>
-                  <th scope="col">Fasilitas Icon</th>
-                  <th scope="col">Fasilitas Image</th>
-                  <th scope="col">Fasilitas Body</th>
+                  <th scope="col">Profil Perusahaan Nama</th>
+                  <th scope="col">Profil Perusahaan Email</th>
+                  <th scope="col">Profil Perusahaan Alamat</th>
+                  <th scope="col">Profil Perusahaan No Hp</th>
+                  <th scope="col">Profil Perusahaan Deskripsi</th>
+                  <th scope="col">Profil Perusahaan Image</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -231,7 +255,8 @@
               </tbody>
             </table>
           </div>
-          
+            
+
             <!--  -->
             <div class="modal fade" id="modalLogout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
@@ -251,7 +276,6 @@
               </div>
             </div>
       
-
       </div>
 </div>
 
@@ -281,8 +305,9 @@
 
 $(document).ready( function () {
 
-  var token=localStorage.getItem("accessToken")
 
+    var token=localStorage.getItem("accessToken")
+    
     var table = $('#myTable').DataTable( {
        
        processing: true,
@@ -291,28 +316,30 @@ $(document).ready( function () {
        scrollX: true,
        scrollY: true,
      
-       ajax:{
-            url: "/admin/fasilitas/datatables",
+       ajax: {
+            url: "{{.path}}admin/profilperusahaan/datatables",
             type: "GET",
             headers: { 'Authorization': 'Bearer '+token},
              error:function (data) {     
-              if (data.status==401){
-                        window.location = '/user/login';                        
+                  if (data.status==401){
+                        window.location = '/profilperusahaan/login';                        
                   }
                   if (data.status==403){
-                        window.location = '/user/pemesanan';
-                 }   
-             }
+                        window.location = '/profilperusahaan/pemesanan';
+                 }     
+             } 
        },
        columns: [
-               { data: 'fasilitas_nama', name: 'fasilitas_nama', class:'text-center' },
-               { data: 'fasilitas_icon', name: 'fasilitas_icon' },
-               { data: 'fasilitas_image', name: 'fasilitas_image' },
-               { data: 'fasilitas_body', name: 'fasilitas_body' },
+               { data: 'profil_perusahaan_nama', name: 'profil_perusahaan_nama', class:'text-center' },
+               { data: 'profil_perusahaan_email', name: 'profil_perusahaan_email' },
+               { data: 'profil_perusahaan_alamat', name: 'profil_perusahaan_alamat' },
+               { data: 'profil_perusahaan_no_hp', name: 'profil_perusahaan_no_hp' },
+               { data: 'profil_perusahaan_deskripsi', name: 'profil_perusahaan_deskripsi' },
+               { data: 'profil_perusahaan_image', name: 'profil_perusahaan_image' },
                { data: 'action', name: 'action' },            
            ],
      });
- 
+
      $('#tombolRefreshTable').click(function(){
        table.draw();
      });
@@ -336,21 +363,44 @@ $(document).ready( function () {
 
           });
      
-     $('#tombolFasilitas').click(function(){
-       $('#saveBtnTambahFasilitas').addClass('show');
-       $('#saveBtnUpdateFasilitas').attr('hidden', 'true'); 
-       $('#saveBtnTambahFasilitas').removeAttr('hidden'); 
+     $('#tombolProfilPerusahaan').click(function(){
+       $('#saveBtnTambahProfilPerusahaan').addClass('show');
+       $('#saveBtnUpdateProfilPerusahaan').attr('hidden', 'true'); 
+       $('#saveBtnTambahProfilPerusahaan').removeAttr('hidden'); 
+
+       $.get("/admin/profilperusahaan/ajax/get", function (data) {
+         $('#tambahprofilperusahaan').addClass('show');
+            var dataNew=data.data
+           $('#profil_perusahaan_id').val(dataNew.profil_perusahaan_id);
+           $('#profil_perusahaan_nama').val(dataNew.profil_perusahaan_nama);
+           $('#profil_perusahaan_email').val(dataNew.profil_perusahaan_email);
+           $('#profil_perusahaan_alamat').val(dataNew.profil_perusahaan_alamat);
+           $('#profil_perusahaan_no_hp').val(dataNew.profil_perusahaan_no_hp);
+           $('#profil_perusahaan_deskripsi').val(dataNew.profil_perusahaan_deskripsi);
+           $('#profil_perusahaan_image').val(dataNew.profil_perusahaan_image);
+
+ 
+           $("html, body").animate({ scrollTop: 0 }, "slow");
+           // $('#scroll-ku').scrollTop = 0;
+           
+       })
+
      });
  
-     // Tambah user
-     $('#saveBtnTambahFasilitas').click( function(e){
+     // Tambah profil perusahaan
+     $('#saveBtnTambahProfilPerusahaan').click( function(e){
  
-       e.preventDefault();
+      e.preventDefault();
+       $(this).html('Sending..');
+       var profil_perusahaan_id = $('#profil_perusahaan_id').val();
+
+       if (profil_perusahaan_id==""){
+        e.preventDefault();
        $(this).html('Sending..');
    
        $.ajax({
-         data: $('#formtambahfasilitas').serialize(),
-         url: "/admin/fasilitas/ajax",
+         data: $('#formtambahprofilperusahaan').serialize(),
+         url: "/admin/profilperusahaan/ajax",
          type: "POST",
          dataType: 'json',
          beforeSend:function(){
@@ -363,13 +413,13 @@ $(document).ready( function () {
                    $.each(data.error, function(frefix, val){
                      $('span.'+frefix+'_error').text(val[0]);
                      $('span.'+frefix+'_errornotif').text('['+val[0]+']');
-                     $('#saveBtnTambahFasilitas').html('Tambah');
+                     $('#saveBtnTambahProfilPerusahaan').html('Tambah');
                    });
                  }else{
-                   $('#formtambahfasilitas').trigger("reset");
+                   $('#formtambahprofilperusahaan').trigger("reset");
                    table.draw();
-                   $('#saveBtnTambahFasilitas').html('Tambah');
-                   $('#tombolFasilitas').trigger('click');
+                   $('#saveBtnTambahProfilPerusahaan').html('Tambah');
+                   $('#tombolProfilPerusahaan').trigger('click');
                    $('.table-responsive').before(`<div class="alert alert-warning alert-dismissible fade show" role="alert"> Sukses tambah data !!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`);
                    $('.alert').delay(2000).fadeOut(function() {
                      $(this).remove(); 
@@ -379,45 +429,11 @@ $(document).ready( function () {
          },
          
        });
- 
-     })
- 
- 
-     //edit
-     $('body').on('click', '.editUser', function () {
-       $('#saveBtnTambahFasilitas').attr('hidden', 'true'); 
-       $('#saveBtnUpdateFasilitas').removeAttr('hidden'); 
-       $('#saveBtnUpdateFasilitas').html('Update');
- 
- 
- 
- 
-       var fasilitas_id = $(this).data('id');
-       $.get("/admin/fasilitas/ajax" +'/' + fasilitas_id +'/edit', function (data) {
-         $('#tambahfasilitas').addClass('show');
-        var dataNew= data.data
-           $('#fasilitas_id').val(dataNew.fasilitas_id);
-           $('#fasilitas_nama').val(dataNew.fasilitas_nama);
-           $('#fasilitas_icon').val(dataNew.fasilitas_icon);
-           $('#fasilitas_image').val(dataNew.fasilitas_image);
-           $('#fasilitas_body').val(dataNew.fasilitas_body);
-
-           $("html, body").animate({ scrollTop: 0 }, "slow");
-           // $('#scroll-ku').scrollTop = 0;
-           
-       })
-    });
- 
- 
-     //update
-    $('#saveBtnUpdateFasilitas').click(function (e) {
- 
-       e.preventDefault();
-       $(this).html('Sending..');
-       var fasilitas_id = $('#fasilitas_id').val();
-       $.ajax({
-         data: $('#formtambahfasilitas').serialize(),
-         url: "/admin/fasilitas/ajax"+'/'+fasilitas_id,
+       }
+       else{
+        $.ajax({
+         data: $('#formtambahprofilperusahaan').serialize(),
+         url: "/admin/profilperusahaan/ajax"+'/'+profil_perusahaan_id,
          type: "PUT",
          dataType: 'json',
          beforeSend:function(){
@@ -430,14 +446,88 @@ $(document).ready( function () {
                    $.each(data.error, function(frefix, val){
                      $('span.'+frefix+'_error').text(val[0]);
                      $('span.'+frefix+'_errornotif').text('['+val[0]+']');
-                     $('#updateBtnUpdateFasilitas').html('Update');
+                     $('#updateBtnUpdateProfilPerusahaan').html('Update');
                    });
                  }else{
                    $(this).html('Update');
-                   $('#formtambahfasilitas').trigger("reset");
+                   $('#formtambahprofilperusahaan').trigger("reset");
                    table.draw();
-                   $('#saveBtnTambahFasilitas').html('Tambah');
-                   $('#tombolFasilitas').trigger('click');   
+                   $('#saveBtnTambahProfilPerusahaan').html('Tambah');
+                   $('#tombolProfilPerusahaan').trigger('click');   
+                   $('.table-responsive').before(`<div class="alert alert-warning alert-dismissible fade show" role="alert"> Sukses Update data!!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`);
+                   $('.alert').delay(2000).fadeOut(function() {
+                      $(this).remove(); 
+                   });
+                 }
+         },
+         
+       });
+       }
+
+      
+ 
+     })
+ 
+ 
+     //edit
+     $('body').on('click', '.editProfilPerusahaan', function () {
+       $('#saveBtnTambahProfilPerusahaan').attr('hidden', 'true'); 
+       $('#saveBtnUpdateProfilPerusahaan').removeAttr('hidden'); 
+       $('#saveBtnUpdateProfilPerusahaan').html('Update');
+ 
+ 
+ 
+ 
+       var profil_perusahaan_id = $(this).data('id');
+       console.log(profil_perusahaan_id)
+       $.get("/admin/profilperusahaan/ajax" +'/' + profil_perusahaan_id +'/edit', function (data) {
+         $('#tambahprofilperusahaan').addClass('show');
+            var dataNew=data.data
+           $('#profil_perusahaan_id').val(dataNew.profil_perusahaan_id);
+           $('#profil_perusahaan_nama').val(dataNew.profil_perusahaan_nama);
+           $('#profil_perusahaan_email').val(dataNew.profil_perusahaan_email);
+           $('#profil_perusahaan_alamat').val(dataNew.profil_perusahaan_alamat);
+           $('#profil_perusahaan_no_hp').val(dataNew.profil_perusahaan_no_hp);
+           $('#profil_perusahaan_deskripsi').val(dataNew.profil_perusahaan_deskripsi);
+           $('#profil_perusahaan_image').val(dataNew.profil_perusahaan_image);
+
+ 
+           $("html, body").animate({ scrollTop: 0 }, "slow");
+           // $('#scroll-ku').scrollTop = 0;
+           
+       })
+    });
+ 
+ 
+     //update
+    $('#saveBtnUpdateProfilPerusahaan').click(function (e) {
+ 
+       e.preventDefault();
+       $(this).html('Sending..');
+       var profil_perusahaan_id = $('#profil_perusahaan_id').val();
+       $.ajax({
+         data: $('#formtambahprofilperusahaan').serialize(),
+         url: "/admin/profilperusahaan/ajax"+'/'+profil_perusahaan_id,
+         type: "PUT",
+         dataType: 'json',
+         beforeSend:function(){
+               $(document).find('span.error-text').text('');
+             },
+         success: function (data) {
+ 
+           
+                 if(data.status==0){
+                   $.each(data.error, function(frefix, val){
+                     $('span.'+frefix+'_error').text(val[0]);
+                     $('span.'+frefix+'_errornotif').text('['+val[0]+']');
+                     $('#updateBtnUpdateProfilPerusahaan').html('Update');
+                   });
+                 }else{
+                   $(this).html('Update');
+                   $('#formtambahprofilperusahaan').trigger("reset");
+                   table.draw();
+                   $('#saveBtnTambahProfilPerusahaan').html('Tambah');
+                   $('#tombolProfilPerusahaan').trigger('click');   
                    $('.table-responsive').before(`<div class="alert alert-warning alert-dismissible fade show" role="alert"> Sukses Update data!!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`);
                    $('.alert').delay(2000).fadeOut(function() {
                       $(this).remove(); 
@@ -452,12 +542,12 @@ $(document).ready( function () {
  
  
      //batal
-    $('#saveBtnBatalFasilitas').click( function(e){
+    $('#saveBtnBatalProfilPerusahaan').click( function(e){
        $(this).html('Sending..');
        e.preventDefault();
-       $('#formtambahfasilitas').trigger("reset");
-          $('#saveBtnBatalFasilitas').html('Batal');
-          $('#tombolFasilitas').trigger('click');
+       $('#formtambahprofilperusahaan').trigger("reset");
+          $('#saveBtnBatalProfilPerusahaan').html('Batal');
+          $('#tombolProfilPerusahaan').trigger('click');
           $(document).find('span.error-text').text('');
   
      })
@@ -465,14 +555,14 @@ $(document).ready( function () {
  
  
      //delete
-     $('body').on('click', '.deleteUser', function () {
+     $('body').on('click', '.deleteProfilPerusahaan', function () {
       
-       var fasilitas_id = $(this).data("id");
+       var profil_perusahaan_id = $(this).data("id");
        var r = confirm("Are You sure want to delete !");
         if (r == true) {
           $.ajax({
            type: "DELETE",
-           url: "/admin/fasilitas/ajax"+'/'+fasilitas_id,
+           url: "/admin/profilperusahaan/ajax"+'/'+profil_perusahaan_id,
            success: function (data) {
              $('.table-responsive').before(`<div class="alert alert-danger alert-dismissible fade show" role="alert"> Sukses hapus data!!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`);
              table.draw();
@@ -489,10 +579,12 @@ $(document).ready( function () {
         }  
    });
  
+ 
    $('#btnLogout').click( function(e){
     localStorage.removeItem("accessToken")
     window.location = '/admin/login';
      })
+
  
    } );
 

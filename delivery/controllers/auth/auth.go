@@ -225,6 +225,7 @@ func (ac *AuthController) About() echo.HandlerFunc {
 		dataMap["title"] = "Tentang"
 		path := os.Getenv("BASE_URL")
 		dataMap["path"] = path
+		dataMap["image"] = "image-860460070.jpg"
 		data := dataMap
 		// return c.Render(http.StatusOK, "index.html", data)
 		return c.Render(http.StatusOK, "about.html", data)
