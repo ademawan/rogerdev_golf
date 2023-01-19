@@ -122,9 +122,9 @@ func (r *GaleriRepository) GetAllDatatables() ([]domain.GaleriResponseFormatData
 			return galerii, 0, errors.New("failed get")
 		}
 
-		galeri.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + galeri.GaleriId + `" data-original-title="Edit" class="edit btn btn-primary btn-sm editUser">Edit</a>`
+		galeri.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + galeri.GaleriId + `" data-original-title="Edit" class="edit btn btn-primary btn-sm editGaleri">Edit</a>`
 
-		galeri.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + galeri.GaleriId + `" data-original-title="Delete" class="btn btn-danger btn-sm deleteUser">Delete</a>`
+		galeri.Action += `<a href="javascript:void(0)" data-toggle="tooltip"  data-id="` + galeri.GaleriId + `" data-original-title="Delete" class="btn btn-danger btn-sm deleteGaleri">Delete</a>`
 		galerii = append(galerii, galeri)
 	}
 
@@ -203,7 +203,7 @@ func (r *GaleriRepository) QueryBuilder(scope string, galeri *domain.Galeri) (st
 func (r *GaleriRepository) CheckName(fasilitasName string) (string, bool, error) {
 	var galeriId string
 	query := `SELECT galeri_id AS galeriId FROM galeri `
-	query += `WHERE AND galeri_nama=? `
+	query += `WHERE galeri_nama=? `
 
 	err := r.db.QueryRow(query, fasilitasName).Scan(&galeriId)
 	if err != nil {

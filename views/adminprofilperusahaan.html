@@ -283,7 +283,7 @@
                     <th scope="col">Profil Perusahaan Email</th>
                     <th scope="col">Profil Perusahaan Alamat</th>
                     <th scope="col">Profil Perusahaan No Hp</th>
-                    <th scope="col">Profil Perusahaan Deskripsi</th>
+                    <th scope="col" >Profil Perusahaan Deskripsi</th>
                     <th scope="col">Profil Perusahaan Image</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -388,6 +388,19 @@
                 { data: 'profil_perusahaan_image', name: 'profil_perusahaan_image' },
                 { data: 'action', name: 'action' },
               ],
+              "columnDefs": [
+                {
+                    "render": function (data, type, row) {
+                        var html = "";
+                        if (data != "") {
+                            html += $(`<img src="/img/images/` + data + `" alt="" style="max-height: 300px;"/>`).prop('outerHTML');
+                        }               
+
+                        return html;
+                    },
+                    "targets": 5
+                }
+              ]
             });
 
             $('#tombolRefreshTable').click(function () {
@@ -431,6 +444,7 @@
                   $('#saveBtnTambahProfilPerusahaan').html('Tambah');
                 }else{
                   $('#saveBtnTambahProfilPerusahaan').html('Update');
+
                 }
 
                 $("html, body").animate({ scrollTop: 0 }, "slow");

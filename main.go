@@ -61,7 +61,7 @@ func main() {
 	galeriRepo := galeriRepo.NewGaleriRepository(db)
 	fasilitasRepo := fasilitasRepo.NewFasilitasRepository(db)
 
-	authController := ac.New(authRepo, profilperusahaanRepo)
+	authController := ac.New(authRepo, profilperusahaanRepo, galeriRepo)
 	userController := uc.New(userRepo)
 	pemesananController := pc.New(pemesananRepo)
 	pemesananuserController := puc.New(pemesananuserRepo)

@@ -1,12 +1,14 @@
 package auth
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"rogerdev_golf/delivery/controllers/common"
 	"rogerdev_golf/entities"
 	"rogerdev_golf/middlewares"
 	"rogerdev_golf/repository/auth"
+	"rogerdev_golf/repository/galeri"
 	"rogerdev_golf/repository/profilperusahaan"
 
 	"github.com/labstack/gommon/log"
@@ -17,12 +19,14 @@ import (
 type AuthController struct {
 	repo                 auth.Auth
 	repoProfilPerusahaan profilperusahaan.ProfilPerusahaan
+	repoGalerin          galeri.Galeri
 }
 
-func New(repo auth.Auth, repoProfiPerusahaan profilperusahaan.ProfilPerusahaan) *AuthController {
+func New(repo auth.Auth, repoProfiPerusahaan profilperusahaan.ProfilPerusahaan, repoGalerin galeri.Galeri) *AuthController {
 	return &AuthController{
 		repo:                 repo,
 		repoProfilPerusahaan: repoProfiPerusahaan,
+		repoGalerin:          repoGalerin,
 	}
 }
 
@@ -261,6 +265,22 @@ func (ac *AuthController) Project() echo.HandlerFunc {
 		dataMap["title"] = "Galeri"
 		path := os.Getenv("BASE_URL")
 		dataMap["path"] = path
+		profilPerusahaan, _, _ := ac.repoGalerin.GetAllDatatables()
+		dataArray := []string{}
+		dataGaleriNames := []string{}
+		for _, val := range profilPerusahaan {
+
+			dataArray = append(dataArray, val.GaleriImage)
+			dataGaleriNames = append(dataGaleriNames, val.GaleriNama)
+		}
+		fmt.Println(profilPerusahaan)
+		// if len(profilPerusahaan) > 0 {
+		// 	dataMap["profil_perusahaan_nama"] = profilPerusahaan[0].ProfilPerusahaanNama
+		// 	dataMap["profil_perusahaan_deskripsi"] = profilPerusahaan[0].ProfilPerusahaanDeskripsi
+		// 	dataMap["profil_perusahaan_image"] = profilPerusahaan[0].ProfilPerusahaanImage
+		// }
+		dataMap["Galeries"] = dataArray
+		dataMap["GaleriesName"] = dataGaleriNames
 		data := dataMap
 		// return c.Render(http.StatusOK, "index.html", data)
 		return c.Render(http.StatusOK, "projects.html", data)

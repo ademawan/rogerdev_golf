@@ -7,6 +7,7 @@ import (
 	"rogerdev_golf/entities"
 	"rogerdev_golf/middlewares"
 	"rogerdev_golf/repository/galeri"
+	"rogerdev_golf/utils"
 	"strconv"
 	"time"
 
@@ -49,6 +50,22 @@ func (uc *GaleriController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.ResponseUser(http.StatusBadRequest, "There is some problem from input", nil))
 		}
 
+		// Multipart form
+		form, err := c.MultipartForm()
+		if err != nil {
+			return err
+		}
+		files := form.File["galeri_image"]
+		imagePath := ""
+		for _, file := range files {
+			// Source
+			image, err := utils.UploadImage(file)
+			if err != nil {
+				return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err.Error(), nil))
+			}
+			imagePath = image.Path
+		}
+
 		// file, errO := c.FormFile("image")
 		// if errO != nil {
 		// 	log.Info(errO)
@@ -71,7 +88,7 @@ func (uc *GaleriController) Create() echo.HandlerFunc {
 		err_repo := uc.repo.Create(&entities.Galeri{
 			GaleriId:    galeriId,
 			GaleriNama:  req.GaleriNama,
-			GaleriImage: req.GaleriImage,
+			GaleriImage: imagePath,
 		})
 		if err_repo != nil {
 			return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err_repo.Error(), nil))
@@ -134,10 +151,26 @@ func (uc *GaleriController) Update() echo.HandlerFunc {
 		galeriId := c.Param("galeriid")
 		var req = entities.GaleriRequestUpdateFormat{}
 
+		// Multipart form
+		form, err := c.MultipartForm()
+		if err != nil {
+			return err
+		}
+		files := form.File["galeri_image"]
+		imagePath := ""
+		for _, file := range files {
+			// Source
+			image, err := utils.UploadImage(file)
+			if err != nil {
+				return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err.Error(), nil))
+			}
+			imagePath = image.Path
+		}
+
 		err_repo := uc.repo.Update(&entities.Galeri{
 			GaleriId:    galeriId,
 			GaleriNama:  req.GaleriNama,
-			GaleriImage: req.GaleriImage,
+			GaleriImage: imagePath,
 		})
 
 		if err_repo != nil {

@@ -108,7 +108,7 @@ func RegisterPath(e *echo.Echo,
 	e.GET("/admin/galeri/datatables", gc.GetAllDatatables(), middlewares.JwtMiddleware())
 	e.POST("/admin/galeri/ajax", gc.Create())
 	e.GET("/admin/galeri/ajax", gc.GetAll())
-	e.GET("/admin/galeri/ajax/:galeriid/edit", pc.Get())
+	e.GET("/admin/galeri/ajax/:galeriid/edit", gc.Get())
 	e.PUT("/admin/galeri/ajax/:galeriid", gc.Update())
 	e.DELETE("/admin/galeri/ajax/:galeriid", gc.Delete())
 
