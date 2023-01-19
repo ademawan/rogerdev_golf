@@ -18,7 +18,7 @@ func NewPemesananRepository(db *sql.DB) *PemesananRepository {
 	return &PemesananRepository{db: db}
 }
 func (r *PemesananRepository) Create(pemesanan *domain.Pemesanan) error {
-	pemesanan.SecondPlayer = "0"
+	pemesanan.StatusPembayaran = "0"
 	query := `INSERT INTO pemesanan (
 		pemesanan_id,
 		pemesanan_nama,
@@ -38,7 +38,7 @@ func (r *PemesananRepository) Create(pemesanan *domain.Pemesanan) error {
 		user_tipe_id4,
 		user_id,
 		status_pembayaran
-		) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+		) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
 
 	stmt, err := r.db.Prepare(query)
 	if err != nil {
@@ -266,7 +266,8 @@ func (r *PemesananRepository) GetAllDatatables() ([]domain.PemesananResponseForm
 		user_tipe_id2,
 		user_tipe_id3,
 		user_tipe_id4,
-		user_id
+		user_id,
+		status_pembayaran
 	 from
 	 pemesanan `
 	rows1, err := r.db.Query(query)

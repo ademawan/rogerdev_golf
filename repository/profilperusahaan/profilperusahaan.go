@@ -113,17 +113,17 @@ func (r *ProfilPerusahaanRepository) GetAll() ([]domain.ProfilPerusahaanResponse
 }
 
 func (r *ProfilPerusahaanRepository) GetAllDatatables() ([]domain.ProfilPerusahaanResponseFormatDatatables, int, error) {
-	profil_perusahaann := []domain.ProfilPerusahaanResponseFormatDatatables{}
+	profilPerusahaann := []domain.ProfilPerusahaanResponseFormatDatatables{}
 
 	res, err := r.GetCount()
 	if err != nil {
 		if err.Error() == "profil perusahaan is not found" {
-			return profil_perusahaann, 0, nil
+			return profilPerusahaann, 0, nil
 		}
-		return profil_perusahaann, 0, errors.New("Internal Server Eroor")
+		return profilPerusahaann, 0, errors.New("Internal Server Eroor")
 	}
 	if res == 0 {
-		return profil_perusahaann, 0, errors.New("profil_perusahaan is empty")
+		return profilPerusahaann, 0, errors.New("profil_perusahaan is empty")
 	}
 	query := `SELECT profil_perusahaan_id,
 	profil_perusahaan_nama,
@@ -135,7 +135,7 @@ func (r *ProfilPerusahaanRepository) GetAllDatatables() ([]domain.ProfilPerusaha
 	 profil_perusahaan `
 	rows1, err := r.db.Query(query)
 	if err != nil {
-		return profil_perusahaann, 0, errors.New("failed get")
+		return profilPerusahaann, 0, errors.New("failed get")
 	}
 
 	defer rows1.Close()
@@ -146,25 +146,21 @@ func (r *ProfilPerusahaanRepository) GetAllDatatables() ([]domain.ProfilPerusaha
 		if err != nil {
 			fmt.Println(err.Error())
 
-			return profil_perusahaann, 0, errors.New("failed get")
+			return profilPerusahaann, 0, errors.New("failed get")
 		}
+		profilPerusahaann = append(profilPerusahaann, profilPerusahaan)
 
 	}
 
-	return profil_perusahaann, res, nil
+	return profilPerusahaann, res, nil
 }
 
 func (r *ProfilPerusahaanRepository) Update(profilPerusahaan *domain.ProfilPerusahaan) error {
 
 	query, params := r.QueryBuilder("update", profilPerusahaan)
-	result, err := r.db.Exec(query, params...)
+	_, err := r.db.Exec(query, params...)
 	if err != nil {
 		return errors.New("failed update")
-	}
-	count, _ := result.RowsAffected()
-	if count < 1 {
-
-		return errors.New("invalid profil_perusahaan id")
 	}
 
 	return nil

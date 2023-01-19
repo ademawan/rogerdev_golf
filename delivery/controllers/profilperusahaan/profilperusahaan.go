@@ -53,27 +53,20 @@ func (uc *ProfilPerusahaanController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.ResponseUser(http.StatusBadRequest, "There is some problem from input", nil))
 		}
 
-		// file, errO := c.FormFile("image")
-		// if errO != nil {
-		// 	log.Info(errO)
-		// }
-
-		// if file != nil {
-		// 	src, _ := file.Open()
-		// 	link, errU := utils.Upload(uc.conn, src, *file)
-		// 	if errU != nil {
-		// 		return c.JSON(http.StatusBadRequest, common.BadRequest(http.StatusBadRequest, "Upload Failed", nil))
-		// 	}
-		// 	user.Image = link
-		// } else if file == nil {
-		// 	user.Image = ""
-		// }
-		// timeLocation, _ := time.LoadLocation("Asia/Jakarta")
-		// timeNow := time.Now().In(timeLocation).Unix()
-		image, err := utils.UploadImage(req.ProfilPerusahaanImage)
+		// Multipart form
+		form, err := c.MultipartForm()
 		if err != nil {
-			return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err.Error(), nil))
-
+			return err
+		}
+		files := form.File["profil_perusahaan_image"]
+		imagePath := ""
+		for _, file := range files {
+			// Source
+			image, err := utils.UploadImage(file)
+			if err != nil {
+				return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err.Error(), nil))
+			}
+			imagePath = image.Path
 		}
 
 		profilPerusahaan := "PRID00" + strconv.Itoa(int(time.Now().Unix()))
@@ -84,7 +77,7 @@ func (uc *ProfilPerusahaanController) Create() echo.HandlerFunc {
 			ProfilPerusahaanAlamat:    req.ProfilPerusahaanAlamat,
 			ProfilPerusahaanNoHp:      req.ProfilPerusahaanNoHp,
 			ProfilPerusahaanDeskripsi: req.ProfilPerusahaanDeskripsi,
-			ProfilPerusahaanImage:     image.Path,
+			ProfilPerusahaanImage:     imagePath,
 		})
 		if err_repo != nil {
 			return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err_repo.Error(), nil))
@@ -174,32 +167,21 @@ func (uc *ProfilPerusahaanController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.ResponseUser(http.StatusBadRequest, "There is some problem from input", nil))
 		}
 
-		// resGet, errGet := uc.repo.GetById(user_uid)
-		// if errGet != nil {
-		// 	log.Info(resGet)
-		// }
-
-		// file, errO := c.FormFile("image")
-		// if errO != nil {
-		// 	log.Info(errO)
-		// } else if errO == nil {
-		// 	src, _ := file.Open()
-		// 	if resGet.Image != "" {
-		// 		var updateImage = resGet.Image
-		// 		updateImage = strings.Replace(updateImage, "https://airbnb-app.s3.ap-southeast-1.amazonaws.com/", "", -1)
-
-		// 		var resUp = utils.UpdateUpload(uc.conn, updateImage, src, *file)
-		// 		if resUp != "success to update image" {
-		// 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(http.StatusInternalServerError, "There is some error on server"+resUp, nil))
-		// 		}
-		// 	} else if resGet.Image == "" {
-		// 		var image, errUp = utils.Upload(uc.conn, src, *file)
-		// 		if errUp != nil {
-		// 			return c.JSON(http.StatusBadRequest, common.BadRequest(http.StatusBadRequest, "Upload Failed", nil))
-		// 		}
-		// 		newUser.Image = image
-		// 	}
-		// }
+		// Multipart form
+		form, err := c.MultipartForm()
+		if err != nil {
+			return err
+		}
+		files := form.File["profil_perusahaan_image"]
+		imagePath := ""
+		for _, file := range files {
+			// Source
+			image, err := utils.UploadImage(file)
+			if err != nil {
+				return c.JSON(http.StatusConflict, common.ResponseUser(http.StatusConflict, err.Error(), nil))
+			}
+			imagePath = image.Path
+		}
 
 		err_repo := uc.repo.Update(&entities.ProfilPerusahaan{
 			ProfilPerusahaanId:        profilPerusahaanId,
@@ -208,7 +190,7 @@ func (uc *ProfilPerusahaanController) Update() echo.HandlerFunc {
 			ProfilPerusahaanAlamat:    newProfilPrusahaan.ProfilPerusahaanAlamat,
 			ProfilPerusahaanNoHp:      newProfilPrusahaan.ProfilPerusahaanNoHp,
 			ProfilPerusahaanDeskripsi: newProfilPrusahaan.ProfilPerusahaanDeskripsi,
-			ProfilPerusahaanImage:     newProfilPrusahaan.ProfilPerusahaanImage,
+			ProfilPerusahaanImage:     imagePath,
 			// Image:    newUser.Image,
 		})
 

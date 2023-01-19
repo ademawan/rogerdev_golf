@@ -17,7 +17,11 @@ type Images struct {
 
 func UploadImage(request *multipart.FileHeader) (Images, error) {
 	img := Images{}
-	file, _ := request.Open()
+	file, err := request.Open()
+	if err != nil {
+		fmt.Println(err.Error())
+		return img, err
+	}
 
 	tempFile, err := os.CreateTemp("assets/img/images", "image-*.jpg")
 	if err != nil {

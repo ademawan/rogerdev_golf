@@ -119,7 +119,7 @@ func RegisterPath(e *echo.Echo,
 	e.GET("/admin/profilperusahaan/ajax", pruc.GetAll())
 	e.GET("/admin/profilperusahaan/ajax/get", pruc.GetProfilPerusahaan())
 	e.GET("/admin/profilperusahaan/ajax/:profilperusahaanid/edit", pruc.Get())
-	e.PUT("/admin/profilperusahaan/ajax/:profilperusahaanid", pruc.GetAllDatatables())
+	e.PUT("/admin/profilperusahaan/ajax/:profilperusahaanid", pruc.Update())
 	e.DELETE("/admin/profilperusahaan/ajax/:profilperusahaanid", pruc.GetAllDatatables())
 
 	e.POST("/admin/profilperusahaan", pruc.CreateImage())

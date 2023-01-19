@@ -7,6 +7,7 @@ import (
 	"rogerdev_golf/entities"
 	"rogerdev_golf/middlewares"
 	"rogerdev_golf/repository/auth"
+	"rogerdev_golf/repository/profilperusahaan"
 
 	"github.com/labstack/gommon/log"
 
@@ -14,12 +15,14 @@ import (
 )
 
 type AuthController struct {
-	repo auth.Auth
+	repo                 auth.Auth
+	repoProfilPerusahaan profilperusahaan.ProfilPerusahaan
 }
 
-func New(repo auth.Auth) *AuthController {
+func New(repo auth.Auth, repoProfiPerusahaan profilperusahaan.ProfilPerusahaan) *AuthController {
 	return &AuthController{
-		repo: repo,
+		repo:                 repo,
+		repoProfilPerusahaan: repoProfiPerusahaan,
 	}
 }
 
@@ -226,6 +229,12 @@ func (ac *AuthController) About() echo.HandlerFunc {
 		path := os.Getenv("BASE_URL")
 		dataMap["path"] = path
 		dataMap["image"] = "image-860460070.jpg"
+		profilPerusahaan, _, _ := ac.repoProfilPerusahaan.GetAllDatatables()
+		if len(profilPerusahaan) > 0 {
+			dataMap["profil_perusahaan_nama"] = profilPerusahaan[0].ProfilPerusahaanNama
+			dataMap["profil_perusahaan_deskripsi"] = profilPerusahaan[0].ProfilPerusahaanDeskripsi
+			dataMap["profil_perusahaan_image"] = profilPerusahaan[0].ProfilPerusahaanImage
+		}
 		data := dataMap
 		// return c.Render(http.StatusOK, "index.html", data)
 		return c.Render(http.StatusOK, "about.html", data)

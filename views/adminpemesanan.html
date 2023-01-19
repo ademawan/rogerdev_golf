@@ -298,7 +298,7 @@
                           <div class="col-md-12" >
                               <div class="mb-3 row">
                                 <label for="inputtext" class="col-sm-3 col-form-label">Pemesanan Status </label>
-                                <div class="col-sm-3"  style="padding-left: 0 !important">
+                                <div class="col-sm">
                                   <select class="form-select bg-secondary text-light" id="pemesanan_status" name="pemesanan_status">
                                     <option value="Selesai" selected>Selesai</option>
                                     <option value="Diterima">Diterima</option>
@@ -443,7 +443,7 @@ $(document).ready( function () {
        scrollY: true,
      
        ajax: {
-            url: "/admin/pemesanan/datatables",
+            url: "{{.path}}admin/pemesanan/datatables",
             type: "GET",
             headers: { 'Authorization': 'Bearer '+token},
              error:function (data) {     
@@ -507,7 +507,7 @@ $(document).ready( function () {
 
        $.ajax({
          data: $('#formtambahpemesanan').serialize(),
-         url: "/admin/pemesanan/ajax",
+         url: "{{.path}}admin/pemesanan/ajax",
          type: "POST",
          dataType: 'json',
          beforeSend:function(xhr){
@@ -552,7 +552,7 @@ $(document).ready( function () {
  
  
      //edit
-     $('body').on('click', '.editUser', function () {
+     $('body').on('click', '.editPemesanan', function () {
        $('#saveBtnTambahPemesanan').attr('hidden', 'true'); 
        $('#saveBtnUpdatePemesanan').removeAttr('hidden'); 
        $('#saveBtnUpdatePemesanan').html('Update');
@@ -561,7 +561,7 @@ $(document).ready( function () {
  
  
        var pemesanan_id = $(this).data('id');
-       $.get("/admin/pemesanan/ajax" +'/' + pemesanan_id +'/edit', function (data) {
+       $.get("{{.path}}admin/pemesanan/ajax" +'/' + pemesanan_id +'/edit', function (data) {
          $('#tambahpemesanan').addClass('show');
          var dataNew = data.data
  
@@ -581,6 +581,7 @@ $(document).ready( function () {
            $('#user_tipe_id2').val(dataNew.user_tipe_id2);
            $('#user_tipe_id3').val(dataNew.user_tipe_id3);
            $('#user_tipe_id4').val(dataNew.user_tipe_id4);
+           $('#status_pembayaran').val(dataNew.status_pembayaran);
            
 
  
@@ -647,7 +648,7 @@ $(document).ready( function () {
  
  
      //delete
-     $('body').on('click', '.deleteUser', function () {
+     $('body').on('click', '.deletePemesanan', function () {
       
        var pemesanan_id = $(this).data("id");
        var r = confirm("Are You sure want to delete !");
